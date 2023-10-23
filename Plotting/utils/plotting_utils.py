@@ -1,9 +1,9 @@
 import easygui as eg
 import os
 import numpy as np
-import pandas
 import pandas as pd
 from pathlib import Path
+from scipy.stats import mode
 
 
 def openDirectory(dirName):
@@ -57,6 +57,10 @@ def get_spectrometer_data(dfs, data_labels, axes_labels=('wavelength_nm', 'power
 
 def normalize_by_maximum(data, column):
     for df in data.values():
+        try:
+            df[column] = df[column] - mode(df[column])
+        except:
+            df[column] = df[column] - mode(df[column])[0]
         df[column] = df[column] / max(df[column])
 
 

@@ -55,10 +55,8 @@ pulse_amp = pulse_at_file_in[:, 3] + 1j * pulse_at_file_in[:, 4]
 pulse_wavelength_nm = pulse_al_file_in[:, 0]
 pulseWL = (max(pulse_wavelength_nm) + min(pulse_wavelength_nm)) / 2  # pulse central wavelength (nm)
 rep_rate_MHz = 60.56  # MHz
-power_mW = 200
+power_mW = 291
 EPP_J = power_mW / rep_rate_MHz * 1e-9
-GDD = 0.0  # Group delay dispersion (ps^2)
-TOD = 0.0  # Third order dispersion (ps^3)
 
 # Simulation constants
 Window = 2.0  # simulation window (ps)
@@ -75,12 +73,18 @@ font = {'size': 10}
 plt.rc('font', **font)
 
 # Fiber 1 (OFS PM ND-HNLF)
+axis = 'slow'
 Length = 40  # length in mm
 Alpha = 0.8 * 10 ** (-5)  # attenuation coefficient (dB/cm)
 Gamma = 10.5  # Gamma (1/(W km))
 fibWL = 1550  # Center WL of fiber (nm)
-D = -2.6  # (ps/(nm*km))
-D_slope = .026  # (ps/(nm^2*km))
+
+if axis == 'slow':
+    D = -2.6  # (ps/(nm*km))
+    D_slope = .026  # (ps/(nm^2*km))
+elif axis == 'fast':
+    D = -.8
+    D_slope = .024
 if D == 0:
     beta2 = -7.5  # (ps^2/km)
     beta3 = 0.00  # (ps^3/km)
