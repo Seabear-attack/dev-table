@@ -85,6 +85,9 @@ if axis == 'slow':
 elif axis == 'fast':
     D = -.8
     D_slope = .024
+else:
+    D = 0
+    D_slope = 0
 if D == 0:
     beta2 = -7.5  # (ps^2/km)
     beta3 = 0.00  # (ps^3/km)
