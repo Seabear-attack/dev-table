@@ -1,11 +1,11 @@
 # Runs with python ver. 2.7
 
+from matplotlib import table
 import numpy as np
 import matplotlib.pyplot as plt
 import pynlo
 from pathlib import Path
-from Plotting.utils.spectrometerdata import OSAData, readFromFiles
-
+from Dev-table.Plotting.utils.spectrometerdata import OSAData, readFromFiles
 
 def dB(num):
     return 10 * np.log10(np.abs(num) ** 2)
