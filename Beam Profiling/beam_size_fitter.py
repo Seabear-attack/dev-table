@@ -27,7 +27,7 @@ print(f'Waist size: {popt[1]} um')
 
 z_array_mm = np.linspace(- 2 * max(z_positions_data_mm), 2 * max(z_positions_data_mm), 1000)
 
-plt.plot(z_array_mm, gaussian_beamsize_um(z_array_mm, popt[0], popt[1]), color='r', label=f'$w_0$ = {popt[1]: .2f} $\mu$m \n $z_0$ = {popt[0]: .2f} mm')
+plt.plot(z_array_mm, gaussian_beamsize_um(z_array_mm, popt[0], popt[1]), color='r', label=fr'$w_0$ = {popt[1]: .2f} $\mu$m' f'\n $z_0$ = {popt[0]: .2f} mm')
 plt.scatter(z_positions_data_mm, radius_data_um)
 plt.xlabel('z (mm)')
 plt.ylabel(r'w ($\mu$m)')
