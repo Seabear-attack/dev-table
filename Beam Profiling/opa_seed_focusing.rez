@@ -35,6 +35,7 @@
         {
             "is_disabled": false,
             "label": "d1",
+<<<<<<< HEAD
             "layout_draw_narrow": false,
             "layout_show_label": true,
             "params": {
@@ -71,12 +72,50 @@
         {
             "is_disabled": false,
             "label": "d2",
+=======
+>>>>>>> refs/remotes/origin/main
             "layout_draw_narrow": false,
             "layout_show_label": true,
             "params": {
                 "L": {
                     "unit": "mm",
                     "value": 50
+                },
+                "n": {
+                    "unit": "none",
+                    "value": 1
+                }
+            },
+            "title": "",
+            "type": "ElemEmptyRange"
+        },
+        {
+            "is_disabled": false,
+            "label": "F1",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "Alpha": {
+                    "unit": "deg",
+                    "value": 0
+                },
+                "F": {
+                    "unit": "mm",
+                    "value": -100
+                }
+            },
+            "title": "",
+            "type": "ElemThinLens"
+        },
+        {
+            "is_disabled": false,
+            "label": "d2",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "L": {
+                    "unit": "mm",
+                    "value": 122.22222222222223
                 },
                 "n": {
                     "unit": "none",
@@ -98,7 +137,11 @@
                 },
                 "F": {
                     "unit": "mm",
+<<<<<<< HEAD
                     "value": 100
+=======
+                    "value": 222.22222222222223
+>>>>>>> refs/remotes/origin/main
                 }
             },
             "title": "",
@@ -328,6 +371,110 @@
                 "x_unit": "mm",
                 "y_max": 4008.9454591768363,
                 "y_min": -947.2233826254856,
+                "y_title": "Beam Radius {(unit)}",
+                "y_unit": "mkm"
+            }
+        },
+        {
+            "function": {
+                "args": [
+                    {
+                        "element_index": 0,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 100
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 2,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 122.22222222222223
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 4,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 100
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 6,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 500
+                            },
+                            "use_step": false
+                        }
+                    }
+                ]
+            },
+            "type": "MultibeamCaustic",
+            "window": {
+                "cursor_enabled": true,
+                "cursor_mode": "Both",
+                "elem_bound_markers": true,
+                "stored_views": {
+                },
+                "ts_flipped": false,
+                "ts_mode": "T",
+                "x_max": 830.4444444444443,
+                "x_min": -8.222222222222221,
+                "x_title": "{elem_labels} {(unit)}",
+                "x_unit": "mm",
+                "y_max": 2560.6659866060904,
+                "y_min": -68.6219796660613,
                 "y_title": "Beam Radius {(unit)}",
                 "y_unit": "mkm"
             }
