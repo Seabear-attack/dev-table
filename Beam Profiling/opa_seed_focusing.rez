@@ -10,28 +10,64 @@
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": -100
+            "value": -50
         },
         "Ft2": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 222.22222222222223
+            "value": 100
         },
         "M": {
             "descr": "",
             "dim": "none",
             "unit": "none",
-            "value": 0.45
+            "value": 0.5
         },
         "dt": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 122.22222222222223
+            "value": 50
         }
     },
     "elements": [
+        {
+            "is_disabled": false,
+            "label": "d1",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "L": {
+                    "unit": "mm",
+                    "value": 300
+                },
+                "n": {
+                    "unit": "none",
+                    "value": 1
+                }
+            },
+            "title": "",
+            "type": "ElemEmptyRange"
+        },
+        {
+            "is_disabled": false,
+            "label": "F1",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "Alpha": {
+                    "unit": "deg",
+                    "value": 0
+                },
+                "F": {
+                    "unit": "mm",
+                    "value": -50
+                }
+            },
+            "title": "",
+            "type": "ElemThinLens"
+        },
         {
             "is_disabled": false,
             "label": "d2",
@@ -40,7 +76,7 @@
             "params": {
                 "L": {
                     "unit": "mm",
-                    "value": 100
+                    "value": 50
                 },
                 "n": {
                     "unit": "none",
@@ -62,7 +98,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": -100
+                    "value": 100
                 }
             },
             "title": "",
@@ -76,7 +112,7 @@
             "params": {
                 "L": {
                     "unit": "mm",
-                    "value": 122.22222222222223
+                    "value": 100
                 },
                 "n": {
                     "unit": "none",
@@ -98,42 +134,6 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 222.22222222222223
-                }
-            },
-            "title": "",
-            "type": "ElemThinLens"
-        },
-        {
-            "is_disabled": false,
-            "label": "d4",
-            "layout_draw_narrow": false,
-            "layout_show_label": true,
-            "params": {
-                "L": {
-                    "unit": "mm",
-                    "value": 100
-                },
-                "n": {
-                    "unit": "none",
-                    "value": 1
-                }
-            },
-            "title": "",
-            "type": "ElemEmptyRange"
-        },
-        {
-            "is_disabled": false,
-            "label": "F4",
-            "layout_draw_narrow": false,
-            "layout_show_label": true,
-            "params": {
-                "Alpha": {
-                    "unit": "deg",
-                    "value": 0
-                },
-                "F": {
-                    "unit": "mm",
                     "value": 250
                 }
             },
@@ -142,7 +142,7 @@
         },
         {
             "is_disabled": false,
-            "label": "d5",
+            "label": "d4",
             "layout_draw_narrow": false,
             "layout_show_label": true,
             "params": {
@@ -185,14 +185,14 @@
             "target_param": "F"
         },
         {
-            "source_param": "dt",
-            "target_elem": 2,
-            "target_param": "L"
-        },
-        {
             "source_param": "Ft2",
             "target_elem": 3,
             "target_param": "F"
+        },
+        {
+            "source_param": "dt",
+            "target_elem": 2,
+            "target_param": "L"
         }
     ],
     "pumps": [
@@ -246,7 +246,7 @@
                             },
                             "stop": {
                                 "unit": "mm",
-                                "value": 100
+                                "value": 300
                             },
                             "use_step": false
                         }
@@ -266,7 +266,7 @@
                             },
                             "stop": {
                                 "unit": "mm",
-                                "value": 122.22222222222223
+                                "value": 50
                             },
                             "use_step": false
                         }
