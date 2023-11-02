@@ -1,5 +1,6 @@
 # Runs with python ver. 2.7
 
+from matplotlib import table
 import numpy as np
 import matplotlib.pyplot as plt
 import pynlo

@@ -1,0 +1,483 @@
+{
+    "builtin_params": {
+        "lambda": {
+            "unit": "nm",
+            "value": 1550
+        }
+    },
+    "custom_params": {
+        "Ft1": {
+            "descr": "",
+            "dim": "linear",
+            "unit": "mm",
+            "value": -50
+        },
+        "Ft2": {
+            "descr": "",
+            "dim": "linear",
+            "unit": "mm",
+            "value": 100
+        },
+        "M": {
+            "descr": "",
+            "dim": "none",
+            "unit": "none",
+            "value": 0.5
+        },
+        "dt": {
+            "descr": "",
+            "dim": "linear",
+            "unit": "mm",
+            "value": 50
+        }
+    },
+    "elements": [
+        {
+            "is_disabled": false,
+            "label": "d1",
+<<<<<<< HEAD
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "L": {
+                    "unit": "mm",
+                    "value": 300
+                },
+                "n": {
+                    "unit": "none",
+                    "value": 1
+                }
+            },
+            "title": "",
+            "type": "ElemEmptyRange"
+        },
+        {
+            "is_disabled": false,
+            "label": "F1",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "Alpha": {
+                    "unit": "deg",
+                    "value": 0
+                },
+                "F": {
+                    "unit": "mm",
+                    "value": -50
+                }
+            },
+            "title": "",
+            "type": "ElemThinLens"
+        },
+        {
+            "is_disabled": false,
+            "label": "d2",
+=======
+>>>>>>> refs/remotes/origin/main
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "L": {
+                    "unit": "mm",
+                    "value": 50
+                },
+                "n": {
+                    "unit": "none",
+                    "value": 1
+                }
+            },
+            "title": "",
+            "type": "ElemEmptyRange"
+        },
+        {
+            "is_disabled": false,
+            "label": "F1",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "Alpha": {
+                    "unit": "deg",
+                    "value": 0
+                },
+                "F": {
+                    "unit": "mm",
+                    "value": -100
+                }
+            },
+            "title": "",
+            "type": "ElemThinLens"
+        },
+        {
+            "is_disabled": false,
+            "label": "d2",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "L": {
+                    "unit": "mm",
+                    "value": 122.22222222222223
+                },
+                "n": {
+                    "unit": "none",
+                    "value": 1
+                }
+            },
+            "title": "",
+            "type": "ElemEmptyRange"
+        },
+        {
+            "is_disabled": false,
+            "label": "F2",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "Alpha": {
+                    "unit": "deg",
+                    "value": 0
+                },
+                "F": {
+                    "unit": "mm",
+<<<<<<< HEAD
+                    "value": 100
+=======
+                    "value": 222.22222222222223
+>>>>>>> refs/remotes/origin/main
+                }
+            },
+            "title": "",
+            "type": "ElemThinLens"
+        },
+        {
+            "is_disabled": false,
+            "label": "d3",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "L": {
+                    "unit": "mm",
+                    "value": 100
+                },
+                "n": {
+                    "unit": "none",
+                    "value": 1
+                }
+            },
+            "title": "",
+            "type": "ElemEmptyRange"
+        },
+        {
+            "is_disabled": false,
+            "label": "F3",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "Alpha": {
+                    "unit": "deg",
+                    "value": 0
+                },
+                "F": {
+                    "unit": "mm",
+                    "value": 250
+                }
+            },
+            "title": "",
+            "type": "ElemThinLens"
+        },
+        {
+            "is_disabled": false,
+            "label": "d4",
+            "layout_draw_narrow": false,
+            "layout_show_label": true,
+            "params": {
+                "L": {
+                    "unit": "mm",
+                    "value": 500
+                },
+                "n": {
+                    "unit": "none",
+                    "value": 1
+                }
+            },
+            "title": "",
+            "type": "ElemEmptyRange"
+        }
+    ],
+    "formulas": [
+        {
+            "code": "-Ft1/M",
+            "param_deps": [
+                "M",
+                "Ft1"
+            ],
+            "target_param": "Ft2"
+        },
+        {
+            "code": "Ft1 + Ft2",
+            "param_deps": [
+                "Ft1",
+                "Ft2"
+            ],
+            "target_param": "dt"
+        }
+    ],
+    "notes": "",
+    "param_links": [
+        {
+            "source_param": "Ft1",
+            "target_elem": 1,
+            "target_param": "F"
+        },
+        {
+            "source_param": "Ft2",
+            "target_elem": 3,
+            "target_param": "F"
+        },
+        {
+            "source_param": "dt",
+            "target_elem": 2,
+            "target_param": "L"
+        }
+    ],
+    "pumps": [
+        {
+            "color": "#555555",
+            "is_active": true,
+            "label": "P1",
+            "mode": "Waist",
+            "params": {
+                "MI": {
+                    "unit": "none",
+                    "value_s": 1,
+                    "value_t": 1
+                },
+                "w_0": {
+                    "unit": "mkm",
+                    "value_s": 1035,
+                    "value_t": 1035
+                },
+                "z_w": {
+                    "unit": "mm",
+                    "value_s": 597,
+                    "value_t": 597
+                }
+            },
+            "title": ""
+        }
+    ],
+    "schema_version": "2.0",
+    "title": "",
+    "trip_type": "SP",
+    "windows": [
+        {
+            "type": "SchemaParams"
+        },
+        {
+            "function": {
+                "args": [
+                    {
+                        "element_index": 0,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 300
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 2,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 50
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 4,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 100
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 6,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 500
+                            },
+                            "use_step": false
+                        }
+                    }
+                ]
+            },
+            "type": "MultibeamCaustic",
+            "window": {
+                "cursor_enabled": true,
+                "cursor_mode": "Both",
+                "elem_bound_markers": true,
+                "stored_views": {
+                },
+                "ts_flipped": false,
+                "ts_mode": "T",
+                "x_max": 906.390469749683,
+                "x_min": -95.8652887329034,
+                "x_title": "{elem_labels} {(unit)}",
+                "x_unit": "mm",
+                "y_max": 4008.9454591768363,
+                "y_min": -947.2233826254856,
+                "y_title": "Beam Radius {(unit)}",
+                "y_unit": "mkm"
+            }
+        },
+        {
+            "function": {
+                "args": [
+                    {
+                        "element_index": 0,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 100
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 2,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 122.22222222222223
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 4,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 100
+                            },
+                            "use_step": false
+                        }
+                    },
+                    {
+                        "element_index": 6,
+                        "param": "L",
+                        "range": {
+                            "points": 1000,
+                            "start": {
+                                "unit": "mm",
+                                "value": 0
+                            },
+                            "step": {
+                                "unit": "mm",
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 500
+                            },
+                            "use_step": false
+                        }
+                    }
+                ]
+            },
+            "type": "MultibeamCaustic",
+            "window": {
+                "cursor_enabled": true,
+                "cursor_mode": "Both",
+                "elem_bound_markers": true,
+                "stored_views": {
+                },
+                "ts_flipped": false,
+                "ts_mode": "T",
+                "x_max": 830.4444444444443,
+                "x_min": -8.222222222222221,
+                "x_title": "{elem_labels} {(unit)}",
+                "x_unit": "mm",
+                "y_max": 2560.6659866060904,
+                "y_min": -68.6219796660613,
+                "y_title": "Beam Radius {(unit)}",
+                "y_unit": "mkm"
+            }
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 # Plots every scope lineout in user-selected folder. Works for Tektronix scopes
-from Plotting.utils.plotting_utils import directory_to_dataframes, get_scope_data, normalize_by_maximum
+from utils.plotting_utils import directory_to_dataframes, get_scope_data, normalize_by_maximum
 import matplotlib.pyplot as plt
-from Plotting.utils.spectrometerdata import RFSAData, readFromFiles
+from utils.spectrometerdata import RFSAData, readFromFiles
 import numpy as np
 from pathlib import Path
 
