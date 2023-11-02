@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from Plotting.utils import frogdata
+from utils import frogdata
 from pathlib import Path
 import re
 

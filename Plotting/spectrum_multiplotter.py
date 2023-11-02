@@ -4,7 +4,7 @@ import easygui as eg
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from Plotting.utils.plotting_utils import openDirectory, directory_to_dataframes, get_spectrometer_data
+from utils.plotting_utils import openDirectory, directory_to_dataframes, get_spectrometer_data
 
 if __name__ == "__main__":
     dfs = directory_to_dataframes(r'C:\Users\wahlm\Documents\School\Research\Allison\Tunable Pump\Polarization '
