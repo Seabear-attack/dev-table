@@ -2,20 +2,22 @@ import numpy as np
 from scipy.optimize import curve_fit, Bounds
 import matplotlib.pyplot as plt 
 
-def gaussian_beamsize_um(z_mm, z0_mm, w0_um, wavelength_nm = 1550):
+def gaussian_beamsize_um(z_mm, z0_mm, w0_um, wavelength_nm = 1035):
     zR_um = np.pi *  w0_um ** 2 / (wavelength_nm / 1000)
     return w0_um * np.sqrt(1 + (1000 * (z_mm - z0_mm) / zR_um) ** 2)
 
 
-z_positions_data_cm = np.array([10.6,
-15.7,
-51.3,
-74])
+z_positions_data_cm = np.array([60,
+70.16,
+80.32,
+90.48,
+30])
 
-radius_data_um = np.array([1085,
-1097.5,
-1166.5,
-1213])
+radius_data_um = np.array([860,
+830,
+835.5,
+810,
+855])
 
 z_positions_data_mm = 10 * z_positions_data_cm
 
