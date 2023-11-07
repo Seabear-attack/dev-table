@@ -24,12 +24,14 @@ if __name__ == "__main__":
                                                  max(power), min(power)))
     
     # Plot the fit against the raw data
+    plt.figure()
     plt.scatter(x_um, power, label='Data')
     plt.plot(x_um, knifeedge(x_um, *popt), color='r', label=r'Fit: $\frac{1}{e^2}$ radius = ' f'{popt[0]: .0f} $\mu$m')
     plt.xlabel(r'Position ($\mu$m)')
     plt.ylabel(r'Cumulative Power (W)')
     plt.legend()
     plt.title('Fit of Raw Knife Edge Data')
+    plt.tight_layout()
     plt.show(block=False)
     
     # calculate and the spatial profile against the derivative of the fit (i.e. the pdf)
@@ -42,4 +44,5 @@ if __name__ == "__main__":
     plt.title('Fit vs. Calculated Spatial Profile')
     plt.xlabel(r'Position($\mu$m)')
     plt.ylabel('Spatial Power (arb.)')
+    plt.tight_layout()
     plt.show()
