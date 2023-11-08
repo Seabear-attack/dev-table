@@ -13,7 +13,7 @@ def knifeedge(x_um, intensity_e_sq_radius, center, max_power, offset):
 
 
 if __name__ == "__main__":
-    x_um = np.array([17000,
+    x_um_data = np.array([17000,
         16900,
         16800,
         16700,
@@ -55,7 +55,9 @@ if __name__ == "__main__":
         13100,
         13000,
         12900])
-    dx = x_um[1] - x_um[0]
+    x_um_interp = np.linspace(min(x_um_data), max(x_um_data), 1000)
+    dx_data = x_um_data[1] - x_um_data[0]
+    dx_interp = x_um_interp[1]-x_um_interp[0]
     stddev = 324
     middle = 500
     power = [1.9,
@@ -101,27 +103,31 @@ if __name__ == "__main__":
 0.28,
 0.22]
     power = np.array(power)
-    x_um = x_um[7:]
+    x_um_data = x_um_data[7:]
     power = power[7:]
     # Do the fit
-    popt, _ = curve_fit(knifeedge, x_um, power, ((max(x_um)-min(x_um))/2, x_um[power==np.median(power)][0],
-                                                 max(power), min(power)))
+    radius_guess = (max(x_um_data)-min(x_um_data))/2
+    center_guess = x_um_data[power==np.median(power)][0]
+    max_pow_guess = max(power)
+    offset_guess = min(power)
+    popt, _ = curve_fit(knifeedge, x_um_data, power, (radius_guess, center_guess, max_pow_guess, offset_guess))
     # , bounds=(((max(x_um)-min(x_um))/2, np.median(power)/1.5, max(power)/1.5, min(power)/1.5),
                                                                                 #   ((max(x_um)-min(x_um))/2, np.median(power)*1.5, max(power)*1.5, min(power)*1.5))
     print(popt)
     # Plot the fit against the raw data
     f, axs = plt.subplots(2, 1, figsize=(6, 6), sharex=True)
-    axs[0].scatter(x_um, power, label='Data')
-    axs[0].plot(x_um, knifeedge(x_um, *popt), color='r', label=r'Fit: $\frac{1}{e^2}$ radius = ' f'{popt[0]: .0f} $\mu$m')
+    axs[0].scatter(x_um_data, power, label='Data')
+    axs[0].plot(x_um_interp, knifeedge(x_um_interp, *popt), color='r', label=r'Fit: $\frac{1}{e^2}$ radius = ' f'{popt[0]: .0f} $\mu$m')
     axs[0].set_ylabel(r'Cumulative Power (W)')
     axs[0].legend()
     axs[0].set_title('Fit of Raw Knife Edge Data')
     
     # calculate and the spatial profile against the derivative of the fit (i.e. the pdf)
     
-    dp_dx = FinDiff(0, dx, 1)
-    axs[1].scatter(x_um, dp_dx(power), marker='o', label='Spatial Profile')
-    axs[1].plot(x_um, norm.pdf(x_um, loc=popt[1], scale=popt[0] / 2), 'r-', label=r'Fit: $\frac{1}{e^2}$ radius = ' f'{popt[0]: .0f} $\mu$m')
+    dp_dx_data = FinDiff(0, dx_data, 1)
+    dp_dx_interp = FinDiff(0,dx_interp, 1)
+    axs[1].scatter(x_um_data, dp_dx_data(power), marker='o', label='Spatial Profile')
+    axs[1].plot(x_um_interp, dp_dx_interp(knifeedge(x_um_interp, *popt)), 'r-', label=r'Fit: $\frac{1}{e^2}$ radius = ' f'{popt[0]: .0f} $\mu$m')
     axs[1].legend()
     axs[1].set_title('Fit vs. Calculated Spatial Profile')
     axs[1].set_xlabel(r'Position($\mu$m)')
