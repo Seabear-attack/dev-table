@@ -16,25 +16,25 @@
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 150
+            "value": -100
         },
         "Ft2": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": -49.999995
+            "value": 100
         },
         "M": {
             "descr": "",
             "dim": "none",
             "unit": "none",
-            "value": 0.3333333
+            "value": 1
         },
         "dt": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 100.000005
+            "value": 0
         }
     },
     "elements": [
@@ -68,7 +68,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 150
+                    "value": -100
                 }
             },
             "title": "",
@@ -82,7 +82,7 @@
             "params": {
                 "L": {
                     "unit": "mm",
-                    "value": 100.000005
+                    "value": 0
                 },
                 "n": {
                     "unit": "none",
@@ -104,7 +104,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": -49.999995
+                    "value": 100
                 }
             },
             "title": "",
@@ -219,14 +219,14 @@
                     "value_t": 1
                 },
                 "w_0": {
-                    "unit": "mm",
-                    "value_s": 5,
-                    "value_t": 5
+                    "unit": "mkm",
+                    "value_s": 1401,
+                    "value_t": 1401
                 },
                 "z_w": {
                     "unit": "mm",
-                    "value_s": 597,
-                    "value_t": 597
+                    "value_s": 0,
+                    "value_t": 0
                 }
             },
             "title": ""
@@ -236,9 +236,6 @@
     "title": "",
     "trip_type": "SP",
     "windows": [
-        {
-            "type": "SchemaParams"
-        },
         {
             "function": {
                 "args": [
@@ -277,7 +274,7 @@
                             },
                             "stop": {
                                 "unit": "mm",
-                                "value": 100.000005
+                                "value": 0
                             },
                             "use_step": false
                         }
@@ -333,15 +330,18 @@
                 },
                 "ts_flipped": false,
                 "ts_mode": "T",
-                "x_max": 1022.1228539919705,
-                "x_min": -288.0144432546877,
+                "x_max": 934.2499999999999,
+                "x_min": -9.249999999999998,
                 "x_title": "{elem_labels} {(unit)}",
                 "x_unit": "mm",
-                "y_max": 6967.246105658568,
-                "y_min": -991.715014391168,
+                "y_max": 1840.2780897650784,
+                "y_min": -38.39671677381789,
                 "y_title": "Beam Radius {(unit)}",
                 "y_unit": "mkm"
             }
+        },
+        {
+            "type": "SchemaParams"
         }
     ]
 }
