@@ -13,16 +13,102 @@ def knifeedge(x_um, intensity_e_sq_radius, center, max_power, offset):
 
 
 if __name__ == "__main__":
-    x_um = np.linspace(0, 1500, 50)
+    x_um = np.array([17000,
+        16900,
+        16800,
+        16700,
+        16600,
+        16500,
+        16400,
+        16300,
+        16200,
+        16100,
+        16000,
+        15900,
+        15800,
+        15700,
+        15600,
+        15500,
+        15400,
+        15300,
+        15200,
+        15100,
+        15000,
+        14900,
+        14800,
+        14700,
+        14600,
+        14500,
+        14400,
+        14300,
+        14200,
+        14100,
+        14000,
+        13900,
+        13800,
+        13700,
+        13600,
+        13500,
+        13400,
+        13300,
+        13200,
+        13100,
+        13000,
+        12900])
     dx = x_um[1] - x_um[0]
     stddev = 324
     middle = 500
-    power = np.power(norm.cdf(x_um, loc=middle, scale=stddev),1) 
-
+    power = [1.9,
+1.9,
+1.9,
+1.9,
+1.9,
+1.9,
+1.85,
+1.84,
+1.84,
+1.84,
+1.84,
+1.83,
+1.82,
+1.82,
+1.81,
+1.8,
+1.78,
+1.77,
+1.75,
+1.73,
+1.72,
+1.71,
+1.68,
+1.64,
+1.6,
+1.56,
+1.5,
+1.42,
+1.34,
+1.25,
+1.14,
+1.04,
+0.95,
+0.85,
+0.73,
+0.62,
+0.53,
+0.46,
+0.39,
+0.33,
+0.28,
+0.22]
+    power = np.array(power)
+    x_um = x_um[7:]
+    power = power[7:]
     # Do the fit
-    popt, _ = curve_fit(knifeedge, x_um, power, ((max(x_um)-min(x_um))/2, np.median(power),
+    popt, _ = curve_fit(knifeedge, x_um, power, ((max(x_um)-min(x_um))/2, x_um[power==np.median(power)][0],
                                                  max(power), min(power)))
-    
+    # , bounds=(((max(x_um)-min(x_um))/2, np.median(power)/1.5, max(power)/1.5, min(power)/1.5),
+                                                                                #   ((max(x_um)-min(x_um))/2, np.median(power)*1.5, max(power)*1.5, min(power)*1.5))
+    print(popt)
     # Plot the fit against the raw data
     f, axs = plt.subplots(2, 1, figsize=(6, 6), sharex=True)
     axs[0].scatter(x_um, power, label='Data')
