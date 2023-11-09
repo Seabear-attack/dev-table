@@ -10,31 +10,31 @@
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 250
+            "value": 150
         },
         "Ft1": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": -50
+            "value": -75
         },
         "Ft2": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 100
+            "value": 99.999975
         },
         "M": {
             "descr": "",
             "dim": "none",
             "unit": "none",
-            "value": 0.5
+            "value": 1.333333
         },
         "dt": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 50
+            "value": 24.999975000000006
         }
     },
     "elements": [
@@ -46,7 +46,7 @@
             "params": {
                 "L": {
                     "unit": "mm",
-                    "value": 300
+                    "value": 100
                 },
                 "n": {
                     "unit": "none",
@@ -68,7 +68,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": -50
+                    "value": -75
                 }
             },
             "title": "",
@@ -82,7 +82,7 @@
             "params": {
                 "L": {
                     "unit": "mm",
-                    "value": 50
+                    "value": 24.999975000000006
                 },
                 "n": {
                     "unit": "none",
@@ -104,7 +104,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 100
+                    "value": 99.999975
                 }
             },
             "title": "",
@@ -140,7 +140,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 250
+                    "value": 150
                 }
             },
             "title": "",
@@ -167,20 +167,20 @@
     ],
     "formulas": [
         {
+            "code": "-Ft1 * M",
+            "param_deps": [
+                "Ft1",
+                "M"
+            ],
+            "target_param": "Ft2"
+        },
+        {
             "code": "Ft1 + Ft2",
             "param_deps": [
                 "Ft1",
                 "Ft2"
             ],
             "target_param": "dt"
-        },
-        {
-            "code": "-Ft1 / M",
-            "param_deps": [
-                "Ft1",
-                "M"
-            ],
-            "target_param": "Ft2"
         }
     ],
     "notes": "",
@@ -257,7 +257,7 @@
                             },
                             "stop": {
                                 "unit": "mm",
-                                "value": 300
+                                "value": 100
                             },
                             "use_step": false
                         }
@@ -277,7 +277,7 @@
                             },
                             "stop": {
                                 "unit": "mm",
-                                "value": 50
+                                "value": 24.999975000000006
                             },
                             "use_step": false
                         }
@@ -333,8 +333,8 @@
                 },
                 "ts_flipped": false,
                 "ts_mode": "T",
-                "x_max": 765.9669746917019,
-                "x_min": 82.06711717083857,
+                "x_max": 732.2499747500001,
+                "x_min": -7.249999750000001,
                 "x_title": "{elem_labels} {(unit)}",
                 "x_unit": "mm",
                 "y_max": 3998.713013209267,

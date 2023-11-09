@@ -10,31 +10,31 @@
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 250
+            "value": 150
         },
         "Ft1": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": -100
+            "value": 75
         },
         "Ft2": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 100
+            "value": -49.99994999999999
         },
         "M": {
             "descr": "",
             "dim": "none",
             "unit": "none",
-            "value": 1
+            "value": 0.666666
         },
         "dt": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 0
+            "value": 25.00005
         }
     },
     "elements": [
@@ -68,7 +68,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": -100
+                    "value": 75
                 }
             },
             "title": "",
@@ -82,7 +82,7 @@
             "params": {
                 "L": {
                     "unit": "mm",
-                    "value": 0
+                    "value": 25.00005
                 },
                 "n": {
                     "unit": "none",
@@ -104,7 +104,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 100
+                    "value": -49.99994999999999
                 }
             },
             "title": "",
@@ -140,7 +140,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 250
+                    "value": 150
                 }
             },
             "title": "",
@@ -274,7 +274,7 @@
                             },
                             "stop": {
                                 "unit": "mm",
-                                "value": 0
+                                "value": 25.00005
                             },
                             "use_step": false
                         }
