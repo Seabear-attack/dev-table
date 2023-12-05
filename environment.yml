@@ -12,8 +12,6 @@ dependencies:
   - sqlite=3.41.2
   - tk=8.6.12
   - tzdata=2023c
-  - vc=14.2
-  - vs2015_runtime=14.27.29016
   - wheel=0.41.2
   - xz=5.4.2
   - zlib=1.2.13
@@ -50,7 +48,6 @@ dependencies:
       - pygments==2.17.2
       - pyparsing==3.1.1
       - python-dateutil==2.8.2
-      - pywin32==306
       - pyzmq==25.1.2
       - scipy==1.11.3
       - six==1.16.0
