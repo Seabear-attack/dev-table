@@ -10,31 +10,31 @@
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 150
+            "value": 300
         },
         "Ft1": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 75
+            "value": -75
         },
         "Ft2": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": -49.99994999999999
+            "value": 99.75
         },
         "M": {
             "descr": "",
             "dim": "none",
             "unit": "none",
-            "value": 0.666666
+            "value": 1.33
         },
         "dt": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 25.00005
+            "value": 24.750000000000007
         }
     },
     "elements": [
@@ -68,7 +68,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 75
+                    "value": -75
                 }
             },
             "title": "",
@@ -82,7 +82,7 @@
             "params": {
                 "L": {
                     "unit": "mm",
-                    "value": 25.00005
+                    "value": 24.750000000000007
                 },
                 "n": {
                     "unit": "none",
@@ -104,7 +104,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": -49.99994999999999
+                    "value": 99.75
                 }
             },
             "title": "",
@@ -140,7 +140,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 150
+                    "value": 300
                 }
             },
             "title": "",
@@ -274,7 +274,7 @@
                             },
                             "stop": {
                                 "unit": "mm",
-                                "value": 25.00005
+                                "value": 24.750000000000007
                             },
                             "use_step": false
                         }
@@ -330,12 +330,12 @@
                 },
                 "ts_flipped": false,
                 "ts_mode": "T",
-                "x_max": 934.2499999999999,
-                "x_min": -9.249999999999998,
+                "x_max": 1125.4075622919245,
+                "x_min": -152.4817654855372,
                 "x_title": "{elem_labels} {(unit)}",
                 "x_unit": "mm",
-                "y_max": 1840.2780897650784,
-                "y_min": -38.39671677381789,
+                "y_max": 2251.7200342279107,
+                "y_min": -292.7828652320204,
                 "y_title": "Beam Radius {(unit)}",
                 "y_unit": "mkm"
             }

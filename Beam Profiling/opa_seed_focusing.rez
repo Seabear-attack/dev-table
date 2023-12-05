@@ -10,31 +10,31 @@
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 150
+            "value": 300
         },
         "Ft1": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": -75
+            "value": -50
         },
         "Ft2": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 99.999975
+            "value": 125
         },
         "M": {
             "descr": "",
             "dim": "none",
             "unit": "none",
-            "value": 1.333333
+            "value": 2.5
         },
         "dt": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
-            "value": 24.999975000000006
+            "value": 75
         }
     },
     "elements": [
@@ -68,7 +68,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": -75
+                    "value": -50
                 }
             },
             "title": "",
@@ -82,7 +82,7 @@
             "params": {
                 "L": {
                     "unit": "mm",
-                    "value": 24.999975000000006
+                    "value": 75
                 },
                 "n": {
                     "unit": "none",
@@ -104,7 +104,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 99.999975
+                    "value": 125
                 }
             },
             "title": "",
@@ -140,7 +140,7 @@
                 },
                 "F": {
                     "unit": "mm",
-                    "value": 150
+                    "value": 300
                 }
             },
             "title": "",
@@ -277,7 +277,7 @@
                             },
                             "stop": {
                                 "unit": "mm",
-                                "value": 24.999975000000006
+                                "value": 75
                             },
                             "use_step": false
                         }
