@@ -10,31 +10,51 @@
             "descr": "",
             "dim": "linear",
             "unit": "mm",
+<<<<<<< HEAD
             "value": 250
+=======
+            "value": 300
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
         },
         "Ft1": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
+<<<<<<< HEAD
             "value": 150
+=======
+            "value": -75
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
         },
         "Ft2": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
+<<<<<<< HEAD
             "value": -49.999999499999994
+=======
+            "value": 99.75
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
         },
         "M": {
             "descr": "",
             "dim": "none",
             "unit": "none",
+<<<<<<< HEAD
             "value": 0.33333333
+=======
+            "value": 1.33
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
         },
         "dt": {
             "descr": "",
             "dim": "linear",
             "unit": "mm",
+<<<<<<< HEAD
             "value": 100.00000049999998
+=======
+            "value": 24.750000000000007
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
         }
     },
     "elements": [
@@ -68,7 +88,11 @@
                 },
                 "F": {
                     "unit": "mm",
+<<<<<<< HEAD
                     "value": 150
+=======
+                    "value": -75
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                 }
             },
             "title": "",
@@ -82,7 +106,11 @@
             "params": {
                 "L": {
                     "unit": "mm",
+<<<<<<< HEAD
                     "value": 100.00000049999998
+=======
+                    "value": 24.750000000000007
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                 },
                 "n": {
                     "unit": "none",
@@ -104,7 +132,11 @@
                 },
                 "F": {
                     "unit": "mm",
+<<<<<<< HEAD
                     "value": -49.999999499999994
+=======
+                    "value": 99.75
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                 }
             },
             "title": "",
@@ -140,7 +172,11 @@
                 },
                 "F": {
                     "unit": "mm",
+<<<<<<< HEAD
                     "value": 250
+=======
+                    "value": 300
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                 }
             },
             "title": "",
@@ -167,7 +203,11 @@
     ],
     "formulas": [
         {
+<<<<<<< HEAD
             "code": "-Ft1 * M",
+=======
+            "code": "-Ft1 * M\n",
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
             "param_deps": [
                 "Ft1",
                 "M"
@@ -219,6 +259,7 @@
                     "value_t": 1
                 },
                 "w_0": {
+<<<<<<< HEAD
                     "unit": "mm",
                     "value_s": 5,
                     "value_t": 5
@@ -227,6 +268,16 @@
                     "unit": "mm",
                     "value_s": 597,
                     "value_t": 597
+=======
+                    "unit": "mkm",
+                    "value_s": 1401,
+                    "value_t": 1401
+                },
+                "z_w": {
+                    "unit": "mm",
+                    "value_s": 0,
+                    "value_t": 0
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                 }
             },
             "title": ""
@@ -237,9 +288,12 @@
     "trip_type": "SP",
     "windows": [
         {
+<<<<<<< HEAD
             "type": "SchemaParams"
         },
         {
+=======
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
             "function": {
                 "args": [
                     {
@@ -253,7 +307,11 @@
                             },
                             "step": {
                                 "unit": "mm",
+<<<<<<< HEAD
                                 "value": 3
+=======
+                                "value": 1
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                             },
                             "stop": {
                                 "unit": "mm",
@@ -273,11 +331,19 @@
                             },
                             "step": {
                                 "unit": "mm",
+<<<<<<< HEAD
                                 "value": 3
                             },
                             "stop": {
                                 "unit": "mm",
                                 "value": 100.00000049999998
+=======
+                                "value": 1
+                            },
+                            "stop": {
+                                "unit": "mm",
+                                "value": 24.750000000000007
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                             },
                             "use_step": false
                         }
@@ -293,7 +359,11 @@
                             },
                             "step": {
                                 "unit": "mm",
+<<<<<<< HEAD
                                 "value": 3
+=======
+                                "value": 1
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                             },
                             "stop": {
                                 "unit": "mm",
@@ -313,7 +383,11 @@
                             },
                             "step": {
                                 "unit": "mm",
+<<<<<<< HEAD
                                 "value": 3
+=======
+                                "value": 1
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
                             },
                             "stop": {
                                 "unit": "mm",
@@ -333,6 +407,7 @@
                 },
                 "ts_flipped": false,
                 "ts_mode": "T",
+<<<<<<< HEAD
                 "x_max": 948.0888867524931,
                 "x_min": -20.91111324750682,
                 "x_title": "{elem_labels} {(unit)}",
@@ -342,6 +417,20 @@
                 "y_title": "Beam Radius {(unit)}",
                 "y_unit": "mkm"
             }
+=======
+                "x_max": 1125.4075622919245,
+                "x_min": -152.4817654855372,
+                "x_title": "{elem_labels} {(unit)}",
+                "x_unit": "mm",
+                "y_max": 2251.7200342279107,
+                "y_min": -292.7828652320204,
+                "y_title": "Beam Radius {(unit)}",
+                "y_unit": "mkm"
+            }
+        },
+        {
+            "type": "SchemaParams"
+>>>>>>> 842d6d749af8e80f5909c36070e2e1d504390a64
         }
     ]
 }
