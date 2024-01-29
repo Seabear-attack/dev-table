@@ -2,67 +2,35 @@
 import matplotlib.pyplot as plt
 from utils.spectrometerdata import OSAData, readFromFiles
 from pathlib import Path
+import numpy as np
+from scipy.signal import lfilter
 
 if __name__ == "__main__":
     directorypath = Path(
-        r'C:\Users\wahlm\Documents\School\Research\Allison\Tunable Pump\Pulse Optimization and Spectrum Generation\12-4-23 New NDHNLF Spectra\Current variation\1.35V')
-    raw_data = readFromFiles(directorypath)
-    labels = ('3 A', '3.25 A', '3.5 A', '3.75 A', '4 A')
+        r'/home/mike/Documents/Data/1-23-24 SHG vs. rep rate')
+    raw_data = readFromFiles(directorypath, skip_header=1, pattern='spectrum*.csv')
+    labels = (r'27.91 $\mu$m', r'29.08 $\mu$m', r'30.49 $\mu$m')
               
-    powers_mW = [0,183.5,
-187.5,
-193.5,
-204.6,
-213.5]
+    powers_mW = [1, 1, 1]
 
-    data = [OSAData(dat, ('nm', 'dBm/nm'), labels[i], powers_mW[i], frep_MHz=60.5) for i, dat in enumerate(raw_data)]
+    n = 15  # the larger n is, the smoother curve will be
+    b = [1.0 / n] * n
+    a = 1
+    #processed_data = [np.array([dat[:,0], lfilter(b, a, dat[:,1])]) for dat in raw_data]
+    for dat in raw_data:
+        dat[:,1] = lfilter(b,a,dat[:,1]) - np.median(dat[:,1])
 
-    fig, axs = plt.subplots(2, 2, sharex=True)
+    data = [OSAData(dat[:,:2], ('nm', 'mW'), labels[i], powers_mW[i], frep_MHz=60.5) for i, dat in enumerate(raw_data)]
 
-    for datum in data:
-        datum.y_axis_units = 'dBm/nm'
-        axs[0,0].plot(datum._x_axis_data, datum.y_axis_data, label=datum.label)
-    axs[0,0].set_xlabel('Wavelength (nm)')
-    axs[0,0].set_ylabel(f'Spectral Power ({data[0].y_axis_units})')
-    axs[0,0].legend()
-    axs[0,0].set_title('1.35 V Offset')
+    fig, axs = plt.subplots()
 
     for datum in data:
-        datum.y_axis_units = 'mW/nm'
-        axs[1,0].plot(datum._x_axis_data, datum.y_axis_data, label=datum.label)
-    axs[1,0].set_xlabel('Wavelength (nm)')
-    axs[1,0].set_ylabel(f'Spectral Power ({data[0].y_axis_units})')
+        datum.y_axis_units = 'mW'
+        axs.plot(datum._x_axis_data, datum.y_axis_data, label=datum.label)
+    axs.set_xlabel('Wavelength (nm)')
+    axs.set_ylabel(f'Spectral Power (arb.)')
+    axs.legend()
 
-    directorypath = Path(r'C:\Users\wahlm\Documents\School\Research\Allison\Tunable Pump\Pulse Optimization and Spectrum Generation\12-4-23 New NDHNLF Spectra\Current variation\-2.3V')
-    raw_data = readFromFiles(directorypath)
-
-    labels = ('3 A', '3.25 A', '3.5 A', '3.75 A', '4 A')
-    powers_mW = (186.5,
-194.5,
-206.5,
-216.7,
-217.6)
-    data = [OSAData(dat, ('nm', 'dBm/nm'), labels[i], powers_mW[i], frep_MHz=60.5) for i, dat in enumerate(raw_data)]
-    for datum in data:
-        datum.y_axis_units = 'dBm/nm'
-        axs[0,1].plot(datum._x_axis_data, datum.y_axis_data, label=datum.label)
-    axs[0,1].set_xlabel('Wavelength (nm)')
-    axs[0,1].set_ylabel(f'Spectral Power ({data[0].y_axis_units})')
-    axs[0,1].legend()
-    axs[0,1].set_title('-2.3 V Offset')
-
-    for datum in data:
-        datum.y_axis_units = 'mW/nm'
-        axs[1,1].plot(datum._x_axis_data, datum.y_axis_data, label=datum.label)
-    axs[1,1].set_xlabel('Wavelength (nm)')
-    axs[1,1].set_ylabel(f'Spectral Power ({data[0].y_axis_units})')
-
-    for ax in axs.flatten():
-        ax.set_xlim([1000, 2500])
-    axs[0,0].set_ylim([-50, 15])
-    axs[0,1].set_ylim([-50, 15])
-    axs[1,0].set_ylim([-.05, .5])
-    axs[1,1].set_ylim([-.05, .5])
     plt.show()
     plt.tight_layout()
     '''
