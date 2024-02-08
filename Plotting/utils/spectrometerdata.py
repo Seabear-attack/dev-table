@@ -238,4 +238,4 @@ def readFromFiles(path, pattern='*.csv', skip_header=40):
     for filepath in filepaths:
         data_list.append(np.genfromtxt(filepath, invalid_raise=False, skip_header=skip_header,
                                        delimiter=',', comments='"'))
-    return data_list
+    return data_list, filepaths

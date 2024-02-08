@@ -4,21 +4,35 @@ from utils.spectrometerdata import OSAData, readFromFiles
 from pathlib import Path
 import numpy as np
 from scipy.signal import lfilter
+import re
 
 if __name__ == "__main__":
     directorypath = Path(
-        r'/home/mike/Documents/Data/1-23-24 SHG vs. rep rate')
-    raw_data = readFromFiles(directorypath, skip_header=1, pattern='spectrum*.csv')
-    labels = (r'27.91 $\mu$m', r'29.08 $\mu$m', r'30.49 $\mu$m')
+        r'/home/mike/Documents/Data/2-8-24 OPA Power')
+    raw_data, filenames = readFromFiles(directorypath, skip_header=1, pattern=r'[0-9]*.csv')
+    labels = []
+    for filename in filenames:
+        match = re.match(r"\d*_\d*", filename.name)
+        labels.append(f'{match[0]} $\mu$m')
+    #labels = (r'25.2 $\mu$m', r'25.5 $\mu$m', r'25.8 $\mu$m', r'26.1 $\mu$m', r'26.4 $\mu$m', r'26.75 $\mu$m'
+    #          , r'27.1 $\mu$m', r'27.8 $\mu$m', r'27.45 $\mu$m', r'27.91 $\mu$m', r'28.15 $\mu$m', r'28.28 $\mu$m', 
+    #          r'28.67 $\mu$m', r'29.08 $\mu$m', r'29.52 $\mu$m', r'29.98 $\mu$m', r'30.49 $\mu$m')
               
-    powers_mW = [1, 1, 1]
+              
+              
+              
+    powers_mW = [1 for i in labels]
 
-    n = 15  # the larger n is, the smoother curve will be
+    n = 3 # the larger n is, the smoother curve will be
     b = [1.0 / n] * n
     a = 1
     #processed_data = [np.array([dat[:,0], lfilter(b, a, dat[:,1])]) for dat in raw_data]
-    for dat in raw_data:
-        dat[:,1] = lfilter(b,a,dat[:,1]) - np.median(dat[:,1])
+    for i, dat in enumerate(raw_data):
+        if np.max(dat[:,1]) < 1000:
+            dat[:,1] = np.pow(2, dat[:,1])
+        np.nan_to_num(dat, copy=False)
+        dat[:,1] = lfilter(b,a,dat[:,1]) 
+        dat[:,1] = dat[:,1] - dat[20,1]
 
     data = [OSAData(dat[:,:2], ('nm', 'mW'), labels[i], powers_mW[i], frep_MHz=60.5) for i, dat in enumerate(raw_data)]
 
