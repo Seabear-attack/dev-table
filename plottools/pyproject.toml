@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plottools_allisonlab"
+version = "0.0.1"
+authors = [
+  { name="Mike Wahl", email="michael.j.wahl@stonybrook.edu" },
+]
+description = "Tools for plotting RF/optical spectra and scope traces"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Private :: Do Not Upload"
+]
+dependencies = [
+    "pandas",
+    "scipy",
+    "pyarrow",
+    "natsort",
+    "matplotlib",
+    "easygui",
+    "PyQt5"
+]
