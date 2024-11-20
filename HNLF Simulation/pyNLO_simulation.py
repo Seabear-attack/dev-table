@@ -8,6 +8,7 @@ from scipy.signal import peak_widths, find_peaks
 from scipy.ndimage import zoom
 import pandas as pd
 
+######## Functions and Constants ##############
 
 def dB(num):
     return 10 * np.log10(np.abs(num) ** 2)
@@ -19,45 +20,34 @@ def expand_freq_axis(aw, factor_log2):
     return np.hstack( (np.zeros(pts_before,), 
                             aw, 
                             np.zeros(pts_after,)) )  
-    
-    # self.set_NPTS(self.NPTS * 2**factor_log2)        
-#     self.set_time_window_ps(self.time_window_ps * 2**factor_log2)
-#     self._AW = None # Force generation of new array
-#     if new_pts_loc == "before":
-        # self.set_AT(np.hstack( (np.zeros(num_new_pts,), AT_current) ))
-#     elif new_pts_loc == "after":
-#         self.set_AT(np.hstack( (AT_current, np.zeros(num_new_pts,)) ))            
-#     elif new_pts_loc == "even":
-        # pts_before = int(np.floor(num_new_pts * 0.5))
-        # pts_after  = num_new_pts - pts_before
-        # self.set_AT(np.hstack( (np.zeros(pts_before,), 
-                                # AT_current, 
-                                # np.zeros(pts_after,)) ))  
 
 # Fundamental constants
 C_NM_PS = C_MKS * 1e-3
 
-# Comparison Spectrum
+
+##### Read in a spectrum for comparison #################
+
 directorypath = Path('~/Documents/Boulder_PhD/Data/11-19-24 Compressor FROG')
 raw_data = pd.read_csv(directorypath / 'spectrum.CSV', skiprows=38, header = None).to_numpy()
 # raw_data, _ = readFromFiles(directorypath, '*', skip_header=38)
 labels = ('5 W')
 powers_mW = [2.5e3]
-frep = 100
-osa_spectrum = OSAData(raw_data, ('nm', 'dBm/nm'), labels[0], powers_mW[0], frep_MHz=frep) 
+rep_rate_MHz = 100
+osa_spectrum = OSAData(raw_data, ('nm', 'dBm/nm'), labels[0], powers_mW[0], frep_MHz=rep_rate_MHz) 
 
 comparison_spectrum = osa_spectrum
 
-# Pulse characteristics
-colnames = ['time [s]', 'ampl_t [au]', 'phase_t [mrad]', 'freq [Hz]', 'ampl_f [au]', 'phase_f [mrad]']
+########### Define pulse characteristics ###############
+
+colnames = ['time [s]', 'ampl_t [au]', 'phase_t [rad]', 'freq [Hz]', 'ampl_f [au]', 'phase_f [rad]']
 recon = pd.read_csv(directorypath / 'function_data.txt', names=colnames, header = None, sep = ' ', skiprows=1)
 
 pulse_time_ps = 1e12 * recon['time [s]']
 pulse_freq_THz = 1e-12 * recon['freq [Hz]']
-pulse_amp_t = recon['ampl_t [au]'] * np.exp(1j * recon['phase_t [mrad]'])
-pulse_amp_f = recon['ampl_f [au]'] * np.exp (1j * recon['phase_f [mrad]'])
-pulseWL = 1555 # pulse central wavelength (nm)
-rep_rate_MHz = 100 # MHz
+phase_sign = -1 # Phase sign is arbitrary for SHG FROG
+pulse_amp_f = recon['ampl_f [au]'] * np.exp (phase_sign * 1j * recon['phase_f [rad]'])
+
+pulseWL_nm = 1555 # pulse central wavelength (nm)
 power_mW = 2.5e3 
 epp_J = power_mW / rep_rate_MHz * 1e-9
 label = 'After HNLF+PM1550'
@@ -133,7 +123,7 @@ fiber_pm1550.generate_fiber(Length * 1e-3, center_wl_nm=fibWL, betas=(beta2, bet
 pulse_in = pynlo.light.PulseBase.Pulse()
 pulse_in.set_NPTS(len(pulse_amp_f))
 # pulse_in.set_NPTS(len(pulse_amp_t))
-pulse_in.set_center_wavelength_nm(pulseWL)
+pulse_in.set_center_wavelength_nm(pulseWL_nm)
 pulse_in.set_time_window_ps(max(pulse_time_ps) - min(pulse_time_ps))
 # pulse_in.set_AT(pulse_amp_t)
 pulse_in.set_AW(pulse_amp_f)
@@ -163,7 +153,7 @@ F_THz = pulse_in.W_mks / (2 * np.pi) * 1e-12  # convert to THz
 
 F_plus_THz = F_THz[F_THz > 0] # Take only positive frequencies
 spectra_by_distance = np.power(np.abs(np.transpose(aw)[:, (F_THz > 0)]), 2) # Convert from amplitude to power
-spectra_by_distance = [OSAData(np.transpose(np.array([F_plus_THz, spectrum])), ('THz', 'mW'), label, power_mW, frep) for
+spectra_by_distance = [OSAData(np.transpose(np.array([F_plus_THz, spectrum])), ('THz', 'mW'), label, power_mW, rep_rate_MHz) for
                        spectrum in spectra_by_distance] # Create an easily manipulatable spectrum object
 
 pulses_by_distance = np.power(np.abs(np.transpose(at)), 2)
@@ -219,6 +209,17 @@ if wavelength_axis:
     lin_spec_comp_ax.plot(comparison_spectrum.x_axis_data, comparison_spectrum.y_axis_data,
              color='b', label='Experimental Spectrum')
     lin_spec_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='b', label='Initial')
+    # Plot phase
+    lin_spec_phase_ax = lin_spec_ax.twinx()
+    wl_axis = C_NM_PS / pulse_in.F_THz
+    phase_axis_init = np.unwrap(np.angle(pulse_in.AW))
+    phase_axis_fin = np.unwrap(np.angle(pulse_out.AW))
+    phase_axis_init = (phase_axis_init - phase_axis_init[int(len(phase_axis_init)/2)])[wl_axis > 0]
+    phase_axis_fin = (phase_axis_fin - phase_axis_fin[int(len(phase_axis_fin)/2)])[wl_axis > 0]
+    wl_axis = wl_axis[wl_axis > 0]
+    lin_spec_phase_ax.plot(wl_axis, phase_axis_init, label='Initial Phase')
+    lin_spec_phase_ax.plot(wl_axis, phase_axis_fin, label='Final Phase')
+
     lin_puls_ax.plot(pulse_in.T_ps, pulses_by_distance[0], color='b', label=f'Initial: FWHM {inp_fwhm_fs: .1f} fs')
 
     # Spectrum in log units
@@ -294,6 +295,7 @@ if wavelength_axis:
     lin_puls_ax.set_xlim(-2, 2)
     log_spec_ax.set_ylim(-60, 20)
     log_spec_comp_ax.set_ylim(-60, 20)
+    lin_spec_phase_ax.set_ylim(-30, 30)
 
     log_puls_ax.set_ylim(30, 100)
 
@@ -304,6 +306,7 @@ if wavelength_axis:
     lin_spec_comp_ax.legend()
     log_spec_comp_ax.legend()
     lin_tl_ax.legend()
+    lin_spec_phase_ax.legend(loc='upper left')
 
 # else:
 #     # TODO Update frequency space sim to reflect changes to wavelength side
