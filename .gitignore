@@ -154,3 +154,4 @@ cython_debug/
 /EDFA Control Gui/pyLX/original codes/.idea/
 .idea/AllisonLab.iml
 .idea/misc.xml
+.vscode
