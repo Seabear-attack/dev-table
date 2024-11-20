@@ -2,6 +2,7 @@ import os
 import re
 from natsort import natsorted
 import numpy as np
+from pathlib import Path
 
 c_nm_ps = 299792.458
 
@@ -231,7 +232,7 @@ class OSAData:
             self._y_axis_data = 10 * np.log10(linear_y_data * self._pulse_energy_nJ / integral / delta_x)
 
 
-def readFromFiles(path, pattern='*.csv', skip_header=40):
+def readFromFiles(path: Path, pattern='*.csv', skip_header=40):
     data_list = []
     files = path.glob(pattern)
     filepaths = natsorted([file for file in files], key=lambda f: str(f.name))
