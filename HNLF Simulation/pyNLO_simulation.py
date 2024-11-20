@@ -12,12 +12,12 @@ import pandas as pd
 def dB(num):
     return 10 * np.log10(np.abs(num) ** 2)
 
-def expand_freq_axis(AW: np.ndarray, factor_log2):
-    num_new_pts = len(AW)*(2**factor_log2 - 1)
+def expand_freq_axis(aw, factor_log2):
+    num_new_pts = len(aw)*(2**factor_log2 - 1)
     pts_before = int(np.floor(num_new_pts * 0.5))
     pts_after  = num_new_pts - pts_before
     return np.hstack( (np.zeros(pts_before,), 
-                            AW, 
+                            aw, 
                             np.zeros(pts_after,)) )  
     
     # self.set_NPTS(self.NPTS * 2**factor_log2)        
@@ -43,7 +43,8 @@ raw_data = pd.read_csv(directorypath / 'spectrum.CSV', skiprows=38, header = Non
 # raw_data, _ = readFromFiles(directorypath, '*', skip_header=38)
 labels = ('5 W')
 powers_mW = [2.5e3]
-osa_spectrum = OSAData(raw_data, ('nm', 'dBm/nm'), labels[0], powers_mW[0], frep_MHz=100) 
+frep = 100
+osa_spectrum = OSAData(raw_data, ('nm', 'dBm/nm'), labels[0], powers_mW[0], frep_MHz=frep) 
 
 comparison_spectrum = osa_spectrum
 
@@ -58,7 +59,7 @@ pulse_amp_f = recon['ampl_f [au]'] * np.exp (1j * recon['phase_f [mrad]'])
 pulseWL = 1555 # pulse central wavelength (nm)
 rep_rate_MHz = 100 # MHz
 power_mW = 2.5e3 
-EPP_J = power_mW / rep_rate_MHz * 1e-9
+epp_J = power_mW / rep_rate_MHz * 1e-9
 label = 'After HNLF+PM1550'
 
 # Manually pad frequency axes
@@ -70,7 +71,7 @@ pulse_amp_f = expand_freq_axis(pulse_amp_f, pad_factor)
 Window = 2.0  # simulation window (ps)
 Steps = 100  # simulation steps
 # Points = 2 ** 13  # simulation points
-pad_factor = 0
+# pad_factor =  5
 Raman = True  # Enable Raman effect?
 Steep = True  # Enable self steepening?
 
@@ -131,27 +132,28 @@ fiber_pm1550.generate_fiber(Length * 1e-3, center_wl_nm=fibWL, betas=(beta2, bet
 ######## This is where the PyNLO magic happens! ############################
 pulse_in = pynlo.light.PulseBase.Pulse()
 pulse_in.set_NPTS(len(pulse_amp_f))
+# pulse_in.set_NPTS(len(pulse_amp_t))
 pulse_in.set_center_wavelength_nm(pulseWL)
 pulse_in.set_time_window_ps(max(pulse_time_ps) - min(pulse_time_ps))
-# pulse.set_AT(pulse_amp_t)
+# pulse_in.set_AT(pulse_amp_t)
 pulse_in.set_AW(pulse_amp_f)
 pulse_in.set_frep_MHz(rep_rate_MHz)
-pulse_in.set_epp(EPP_J)  # set the pulse energy
-pulse_in.expand_time_window(pad_factor, "even")
+pulse_in.set_epp(epp_J)  # set the pulse energy
+# pulse_in.expand_time_window(pad_factor, "even")
 dict = pulse_in.get_pulse_dict()
 # Propagation
 evol = pynlo.interactions.FourWaveMixing.SSFM.SSFM(local_error=0.001, USE_SIMPLE_RAMAN=True,
                                                    disable_Raman=np.logical_not(Raman),
                                                    disable_self_steepening=np.logical_not(Steep))
 
-y, AW, AT, pulse_inter = evol.propagate(pulse_in=pulse_in, fiber=fiber_pm1550, n_steps=Steps)
+y, aw, at, pulse_inter = evol.propagate(pulse_in=pulse_in, fiber=fiber_pm1550, n_steps=Steps)
 
-y2, AW2, AT2, pulse_out = evol.propagate(pulse_in=pulse_inter, fiber=fiber_ofs_ndhnlf, n_steps=Steps)
+y2, aw2, at2, pulse_out = evol.propagate(pulse_in=pulse_inter, fiber=fiber_ofs_ndhnlf, n_steps=Steps)
 
 # Add the sections together
 y = np.append(y, y2[1:] + y[-1], axis=0)
-AW = np.append(AW, AW2[:, 1:], axis=1)
-AT = np.append(AT, AT2[:, 1:], axis=1)
+aw = np.append(aw, aw2[:, 1:], axis=1)
+at = np.append(at, at2[:, 1:], axis=1)
 
 ########## That's it! Physic done. ################
 
@@ -160,11 +162,11 @@ AT = np.append(AT, AT2[:, 1:], axis=1)
 F_THz = pulse_in.W_mks / (2 * np.pi) * 1e-12  # convert to THz
 
 F_plus_THz = F_THz[F_THz > 0] # Take only positive frequencies
-spectra_by_distance = np.power(np.abs(np.transpose(AW)[:, (F_THz > 0)]), 2) # Convert from amplitude to power
-spectra_by_distance = [OSAData(np.transpose(np.array([F_plus_THz, spectrum])), ('THz', 'mW'), label, power_mW) for
+spectra_by_distance = np.power(np.abs(np.transpose(aw)[:, (F_THz > 0)]), 2) # Convert from amplitude to power
+spectra_by_distance = [OSAData(np.transpose(np.array([F_plus_THz, spectrum])), ('THz', 'mW'), label, power_mW, frep) for
                        spectrum in spectra_by_distance] # Create an easily manipulatable spectrum object
 
-pulses_by_distance = np.power(np.abs(np.transpose(AT)), 2)
+pulses_by_distance = np.power(np.abs(np.transpose(at)), 2)
 pulses_by_distance_dB = dB(pulses_by_distance)
 
 y = y * 1e3  # convert distance to mm
@@ -182,7 +184,7 @@ tl_fwhm_fs = 1e3 * pulse_out.dT_ps * tl_fwhm_samples[0]
 
 ########### Generate plots ####################
 fig = plt.figure(figsize=(20, 10))
-dims = (4,4)
+dims = (4,3)
 lin_spec_ax = plt.subplot2grid(dims, (0, 0))
 lin_puls_ax = plt.subplot2grid(dims, (0, 1))
 log_spec_ax = plt.subplot2grid(dims, (1, 0), sharex=lin_spec_ax)
@@ -192,9 +194,9 @@ prop_spec_ax = plt.subplot2grid(dims, (2, 0), rowspan=2, sharex=lin_spec_ax)
 prop_puls_ax = plt.subplot2grid(dims, (2, 1), rowspan=2, sharex=lin_puls_ax)
 
 lin_spec_comp_ax = plt.subplot2grid(dims, (0, 2), rowspan=2)
-log_spec_comp_ax = plt.subplot2grid(dims, (2, 2), rowspan=2)
+log_spec_comp_ax = plt.subplot2grid(dims, (2, 2), rowspan=1)
 
-lin_tl_ax = plt.subplot2grid(dims, (0,3))
+lin_tl_ax = plt.subplot2grid(dims, (3,2))
 
 # Plot details
 
@@ -209,13 +211,13 @@ if wavelength_axis:
     comparison_spectrum.y_axis_units = 'nJ/nm'
     lin_spec_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='r', label='Final')
     lin_puls_ax.plot(pulse_in.T_ps, pulses_by_distance[-1], color='r', label='Final')
-    lin_spec_comp_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='r', label='Simulation')
-    lin_spec_comp_ax.plot(comparison_spectrum.x_axis_data, comparison_spectrum.y_axis_data,
-             color='b', label='Experiment')
 
     spectrum = spectra_by_distance[0]
     spectrum.set_x_window(100, 5000, 'nm', .5)
     spectrum.y_axis_units = 'nJ/nm'
+    lin_spec_comp_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='r', label='FROG spectrum')
+    lin_spec_comp_ax.plot(comparison_spectrum.x_axis_data, comparison_spectrum.y_axis_data,
+             color='b', label='Experimental Spectrum')
     lin_spec_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='b', label='Initial')
     lin_puls_ax.plot(pulse_in.T_ps, pulses_by_distance[0], color='b', label=f'Initial: FWHM {inp_fwhm_fs: .1f} fs')
 
@@ -226,13 +228,14 @@ if wavelength_axis:
     comparison_spectrum.y_axis_units = 'dBnJ/nm'
     log_spec_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='r', label='Final')
     log_puls_ax.plot(pulse_in.T_ps, pulses_by_distance_dB[-1], color='r', label='Final')
-    log_spec_comp_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='r', label='Simulation')
-    log_spec_comp_ax.plot(comparison_spectrum.x_axis_data, comparison_spectrum.y_axis_data,
-             color='b', label='Experiment')
+
 
     spectrum = spectra_by_distance[0]
     spectrum.set_x_window(100, 5000, 'nm', .5)
     spectrum.y_axis_units = 'dBnJ/nm'
+    log_spec_comp_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='r', label='FROG spectrum')
+    log_spec_comp_ax.plot(comparison_spectrum.x_axis_data, comparison_spectrum.y_axis_data,
+             color='b', label='Experimental spectrum')
     log_spec_ax.plot(spectrum.x_axis_data, spectrum.y_axis_data, color='b', label='Initial')
     log_puls_ax.plot(pulse_in.T_ps, pulses_by_distance_dB[0], color='b', label='Initial')
 
@@ -282,8 +285,8 @@ if wavelength_axis:
     lin_tl_ax.set_ylabel('Intensity (a.u.)')
 
     lin_spec_ax.set_xlim(wl_ll, wl_ul)
-    lin_spec_comp_ax.set_xlim(wl_ll, wl_ul)
-    log_spec_comp_ax.set_xlim(wl_ll, wl_ul)
+    lin_spec_comp_ax.set_xlim(1530, 1580)
+    log_spec_comp_ax.set_xlim(1530, 1580)
     lin_tl_ax.set_xlim(-200, 200)
     # ax0.set_ylim([0, ax0.get_ylim()[1] / 50])
     # ax7.set_ylim([0, ax0.get_ylim()[1] / 50])
