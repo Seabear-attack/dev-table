@@ -52,24 +52,20 @@ power_mW = 2.5e3
 epp_J = power_mW / rep_rate_MHz * 1e-9
 label = 'After HNLF+PM1550'
 
-# Manually pad frequency axes
+# Manually pad frequency axes to accommodate supercontinuua
 
 pad_factor = 5 
 pulse_amp_f = expand_freq_axis(pulse_amp_f, pad_factor)
 
-# Simulation constants
+############## Simulation variables ##############3
+
 Window = 2.0  # simulation window (ps)
 Steps = 100  # simulation steps
-# Points = 2 ** 13  # simulation points
-# pad_factor =  5
 Raman = True  # Enable Raman effect?
 Steep = True  # Enable self steepening?
 
-# Plot options
-wavelength_axis = True  # True: wavelength axis, False: frequency axis
 
-font = {'size': 10}
-plt.rc('font', **font)
+############ Fiber definitions ###############
 
 # Fiber 1 (OFS PM ND-HNLF)
 axis = 'fast'
@@ -120,6 +116,7 @@ fiber_pm1550.generate_fiber(Length * 1e-3, center_wl_nm=fibWL, betas=(beta2, bet
 
 
 ######## This is where the PyNLO magic happens! ############################
+
 pulse_in = pynlo.light.PulseBase.Pulse()
 pulse_in.set_NPTS(len(pulse_amp_f))
 # pulse_in.set_NPTS(len(pulse_amp_t))
@@ -145,7 +142,6 @@ y = np.append(y, y2[1:] + y[-1], axis=0)
 aw = np.append(aw, aw2[:, 1:], axis=1)
 at = np.append(at, at2[:, 1:], axis=1)
 
-########## That's it! Physic done. ################
 
 ############# Calculations for relavant plots ##################
 
@@ -173,6 +169,11 @@ tl_fwhm_samples, _, _, _ = peak_widths(tl_pow_t, [int(tl_pow_t.size/2)], rel_hei
 tl_fwhm_fs = 1e3 * pulse_out.dT_ps * tl_fwhm_samples[0]
 
 ########### Generate plots ####################
+wavelength_axis = True  # True: wavelength axis, False: frequency axis
+
+font = {'size': 10}
+plt.rc('font', **font)
+
 fig = plt.figure(figsize=(20, 10))
 dims = (4,3)
 lin_spec_ax = plt.subplot2grid(dims, (0, 0))
