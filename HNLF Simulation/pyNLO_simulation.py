@@ -39,22 +39,24 @@ comparison_spectrum = osa_spectrum
 
 ########### Define pulse characteristics ###############
 
+directorypath = Path('~/Documents/Boulder_PhD/Data/11-20-24 Compressor FROG')
+
 colnames = ['time [s]', 'ampl_t [au]', 'phase_t [rad]', 'freq [Hz]', 'ampl_f [au]', 'phase_f [rad]']
 recon = pd.read_csv(directorypath / 'function_data.txt', names=colnames, header = None, sep = ' ', skiprows=1)
 
 pulse_time_ps = 1e12 * recon['time [s]']
 pulse_freq_THz = 1e-12 * recon['freq [Hz]']
-phase_sign = -1 # Phase sign is arbitrary for SHG FROG
+phase_sign = 1 # Phase sign is arbitrary for SHG FROG
 pulse_amp_f = recon['ampl_f [au]'] * np.exp (phase_sign * 1j * recon['phase_f [rad]'])
 
-pulseWL_nm = 1555 # pulse central wavelength (nm)
+pulseWL_nm = 1556 # pulse central wavelength (nm)
 power_mW = 2.5e3 
 epp_J = power_mW / rep_rate_MHz * 1e-9
 label = 'After HNLF+PM1550'
 
 # Manually pad frequency axes to accommodate supercontinuua
 
-pad_factor = 5 
+pad_factor = 6
 pulse_amp_f = expand_freq_axis(pulse_amp_f, pad_factor)
 
 ############## Simulation variables ##############3
@@ -69,7 +71,7 @@ Steep = True  # Enable self steepening?
 
 # Fiber 1 (OFS PM ND-HNLF)
 axis = 'fast'
-Length = 80  # length in mm
+Length = 70  # length in mm
 Alpha = 0.8 * 10 ** (-5)  # attenuation coefficient (dB/cm)
 Gamma = 10.5  # Gamma (1/(W km))
 fibWL = 1550  # Center WL of fiber (nm)
@@ -96,7 +98,7 @@ fiber_ofs_ndhnlf.generate_fiber(Length * 1e-3, center_wl_nm=fibWL, betas=(beta2,
                       gamma_W_m=Gamma * 1e-3, gvd_units='ps^n/km', gain=-alpha)
 
 # Fiber 2 (PM1550)
-Length = 40  # length in mm
+Length = 50  # length in mm
 Alpha = 1 * 10 ** (-5)  # attenuation coefficient (dB/cm)
 Gamma = 1  # Gamma (1/(W km)) *****guess******
 fibWL = 1550  # Center WL of fiber (nm)
@@ -164,7 +166,11 @@ inp_fwhm_samples, _, _, _ = peak_widths(inp_pow_t, peak, rel_height=.5)
 inp_fwhm_fs = 1e3 * pulse_out.dT_ps * inp_fwhm_samples[0]
 
 # Caculate transform limit and FWHM for the output pulse
-tl_pow_t = np.pow(np.fft.fftshift(np.fft.fft(np.abs(pulse_out.AW))),2)
+
+# TODO not sure how to enforce flat phase. Enforcing flat phase on the 
+# spectrum still creates complex numbers in time. Here, I'm just taking the 
+# magnitude again
+tl_pow_t = np.pow(np.abs(np.fft.ifftshift(np.fft.ifft(np.abs(pulse_out.AW)))),2)
 tl_fwhm_samples, _, _, _ = peak_widths(tl_pow_t, [int(tl_pow_t.size/2)], rel_height=.5)
 tl_fwhm_fs = 1e3 * pulse_out.dT_ps * tl_fwhm_samples[0]
 
