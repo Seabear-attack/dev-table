@@ -31,7 +31,7 @@ directorypath = Path('~/Documents/Boulder_PhD/Data/11-19-24 Compressor FROG')
 raw_data = pd.read_csv(directorypath / 'spectrum.CSV', skiprows=38, header = None).to_numpy()
 # raw_data, _ = readFromFiles(directorypath, '*', skip_header=38)
 labels = ('5 W')
-powers_mW = [2.5e3]
+powers_mW = [1.45e3]
 rep_rate_MHz = 100
 osa_spectrum = OSAData(raw_data, ('nm', 'dBm/nm'), labels[0], powers_mW[0], frep_MHz=rep_rate_MHz) 
 
@@ -50,7 +50,9 @@ phase_sign = 1 # Phase sign is arbitrary for SHG FROG
 pulse_amp_f = recon['ampl_f [au]'] * np.exp (phase_sign * 1j * recon['phase_f [rad]'])
 
 pulseWL_nm = 1556 # pulse central wavelength (nm)
-power_mW = 2.5e3 
+# power_mW = 2.5e3 
+power_mW = powers_mW[0]
+extra_GDD_ps2 = -0.01
 epp_J = power_mW / rep_rate_MHz * 1e-9
 label = 'After HNLF+PM1550'
 
@@ -71,7 +73,7 @@ Steep = True  # Enable self steepening?
 
 # Fiber 1 (OFS PM ND-HNLF)
 axis = 'fast'
-Length = 70  # length in mm
+Length = 100  # length in mm
 Alpha = 0.8 * 10 ** (-5)  # attenuation coefficient (dB/cm)
 Gamma = 10.5  # Gamma (1/(W km))
 fibWL = 1550  # Center WL of fiber (nm)
@@ -98,7 +100,7 @@ fiber_ofs_ndhnlf.generate_fiber(Length * 1e-3, center_wl_nm=fibWL, betas=(beta2,
                       gamma_W_m=Gamma * 1e-3, gvd_units='ps^n/km', gain=-alpha)
 
 # Fiber 2 (PM1550)
-Length = 50  # length in mm
+Length = 1  # length in mm
 Alpha = 1 * 10 ** (-5)  # attenuation coefficient (dB/cm)
 Gamma = 1  # Gamma (1/(W km)) *****guess******
 fibWL = 1550  # Center WL of fiber (nm)
@@ -128,6 +130,7 @@ pulse_in.set_time_window_ps(max(pulse_time_ps) - min(pulse_time_ps))
 pulse_in.set_AW(pulse_amp_f)
 pulse_in.set_frep_MHz(rep_rate_MHz)
 pulse_in.set_epp(epp_J)  # set the pulse energy
+pulse_in.chirp_pulse_W(extra_GDD_ps2)
 # pulse_in.expand_time_window(pad_factor, "even")
 dict = pulse_in.get_pulse_dict()
 # Propagation
@@ -167,9 +170,6 @@ inp_fwhm_fs = 1e3 * pulse_out.dT_ps * inp_fwhm_samples[0]
 
 # Caculate transform limit and FWHM for the output pulse
 
-# TODO not sure how to enforce flat phase. Enforcing flat phase on the 
-# spectrum still creates complex numbers in time. Here, I'm just taking the 
-# magnitude again
 tl_pow_t = np.pow(np.abs(np.fft.ifftshift(np.fft.ifft(np.abs(pulse_out.AW)))),2)
 tl_fwhm_samples, _, _, _ = peak_widths(tl_pow_t, [int(tl_pow_t.size/2)], rel_height=.5)
 tl_fwhm_fs = 1e3 * pulse_out.dT_ps * tl_fwhm_samples[0]
@@ -195,10 +195,11 @@ log_spec_comp_ax = plt.subplot2grid(dims, (2, 2), rowspan=1)
 
 lin_tl_ax = plt.subplot2grid(dims, (3,2))
 
+axes = [lin_spec_ax, lin_puls_ax, log_spec_ax, log_puls_ax, prop_spec_ax, prop_puls_ax, lin_spec_comp_ax, log_spec_comp_ax]
 # Plot details
 
-wl_ll = 1300
-wl_ul = 1800
+wl_ll = 1000
+wl_ul = 2000
 
 if wavelength_axis:
     # Normalize spectrum in linear units
@@ -303,8 +304,10 @@ if wavelength_axis:
     log_spec_ax.set_ylim(-60, 20)
     log_spec_comp_ax.set_ylim(-60, 20)
     lin_spec_phase_ax.set_ylim(-30, 30)
-
     log_puls_ax.set_ylim(30, 100)
+
+    for ax in axes:
+        ax.grid()
 
     lin_spec_ax.legend()
     lin_puls_ax.legend()
