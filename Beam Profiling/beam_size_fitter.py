@@ -4,6 +4,7 @@ from pathlib import Path
 from scipy.optimize import curve_fit, Bounds
 import matplotlib.pyplot as plt 
 
+# Beam radius
 def gaussian_beamsize_M2_um(z_mm, z0_mm, w0_um, M2, wavelength_nm = 1550):
     zR_um = np.pi *  w0_um ** 2 / (wavelength_nm / 1000)
     # return w0_um * np.sqrt(1 + (1000 * (z_mm - z0_mm) / zR_um) ** 2)
