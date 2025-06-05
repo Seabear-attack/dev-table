@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "plottools"
 version = "0.0.1"
 authors = [
-  { name="Mike Wahl", email="michael.j.wahl@stonybrook.edu" },
+  { name="Mike Wahl", email="mike.wahl@colorado.edu" },
 ]
 description = "Tools for plotting RF/optical spectra and scope traces"
 readme = "README.md"
