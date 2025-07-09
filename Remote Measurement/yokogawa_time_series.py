@@ -9,7 +9,7 @@ from numpy import savetxt
 from sched import scheduler
 
 # Connect to PYVISA instance. Use either an alias or the full path (e.g. :INSTR) 
-spectrometer = YokogawaAQ6375E("TCPIP::192.168.1.8::INSTR")
+spectrometer = YokogawaAQ6375E("TCPIP0::192.168.1.58::inst0::INSTR")
 
 # Configure spectrometer settings
 spectrometer.fix_all()

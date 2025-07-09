@@ -11,10 +11,10 @@ data_directory = Path(r"Z:\Research Projects\UVDCS\Data\6-11-2025\mikey_uv_time_
 interval = timedelta(minutes=1)
 start_time = to_datetime("14:48")
 regex = r'Spectrum_(\d+)\.csv'
-divide_by = 5
+divide_by = 20
 
 # Read files
-data, labels = readFromFiles(data_directory, skip_header=0)
+data, labels = readFromFiles(data_directory, skip_header=1)
 data = np.array(data)
 
 data = data[::divide_by]
@@ -33,7 +33,8 @@ for filename in labels:
 f, ax = plt.subplots(1,1)
 
 for i, spectrum in enumerate(data):
-    ax.plot(spectrum[0], spectrum[1], label=timestamp_list[i])
+    # print(spectrum)
+    ax.plot(spectrum[:,0], spectrum[:,1], label=timestamp_list[i])
 
 ax.set_ylabel(f"Spectral Power (lin arb.)")
 ax.set_xlabel("Wavelength (nm)")

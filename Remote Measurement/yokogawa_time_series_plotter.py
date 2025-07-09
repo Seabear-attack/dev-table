@@ -6,8 +6,8 @@ import re
 import matplotlib.pyplot as plt
 
 # Configure data directory 
-data_directory_1 = Path(r"Z:/Research Projects/UVDCS\Data/6-6-2025/14h-16m_spectrum_time_series")
-data_directory_2 = Path(r"Z:/Research Projects/UVDCS\Data/6-6-2025/15h-25m_spectrum_time_series")
+data_directory_1 = Path(r"Z:\Research Projects\UVDCS\Data\7-1-2025\13h-29m_spectrum_time_series")
+# data_directory_2 = Path(r"Z:/Research Projects/UVDCS\Data/6-6-2025/15h-25m_spectrum_time_series")
 
 
 # Load config
@@ -19,14 +19,14 @@ with open(config_file,'r') as file:
 data, labels = readFromFiles(data_directory_1, skip_header=0)
 data = np.array(data)
 
-data2, labels2 = readFromFiles(data_directory_2, skip_header=0)
-data2 = np.array(data)
+# data2, labels2 = readFromFiles(data_directory_2, skip_header=0)
+# data2 = np.array(data)
 
-data = np.append(data, data2, axis=0)
-labels += labels2
+# data = np.append(data, data2, axis=0)
+# labels += labels2
 
 # Take subset of data
-divide_by = 10
+divide_by = 20
 data = data[::divide_by]
 labels = labels[::divide_by]
 
@@ -47,7 +47,7 @@ for i, spectrum in enumerate(data):
 
 ax.set_ylabel(f"Spectral Power (log arb.)")
 ax.set_xlabel("Wavelength (nm)")
-ax.set_ylim(-70,-25)
+ax.set_ylim(-50,0)
 ax.grid()
 ax.legend()
 plt.show()
