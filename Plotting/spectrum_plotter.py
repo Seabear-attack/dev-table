@@ -8,20 +8,19 @@ import re
 
 if __name__ == "__main__":
     directorypath = Path(
-        r'Z:\Research Projects\UVDCS\Data\3-10-25 Spectrometer Calibration')
-    raw_data, filenames = readFromFiles(directorypath, skip_header=1, pattern='*.csv')
-    labels = [r'Unoptimized, calibration 1',r'Optimized, calibration 2',r'$0.24^{\circ}$ Grating, Bad Cal']
+        r'/home/mike/Documents/Boulder_PhD/Data/7-30-2025/Visible Spectra')
+    raw_data, filenames = readFromFiles(directorypath, skip_header=39, pattern='*.CSV')
     # for filename in filenames:
         # match = re.match(r"\d*_\d*", filename.name)
         # labels.append(f'{match[0]} $\mu$m')
     #labels = (r'25.2 $\mu$m', r'25.5 $\mu$m', r'25.8 $\mu$m', r'26.1 $\mu$m', r'26.4 $\mu$m', r'26.75 $\mu$m'
     #          , r'27.1 $\mu$m', r'27.8 $\mu$m', r'27.45 $\mu$m', r'27.91 $\mu$m', r'28.15 $\mu$m', r'28.28 $\mu$m', 
     #          r'28.67 $\mu$m', r'29.08 $\mu$m', r'29.52 $\mu$m', r'29.98 $\mu$m', r'30.49 $\mu$m')
+    labels = [file.stem for file in filenames]              
               
               
               
-              
-    powers_mW = [1 for i in labels]
+    powers_mW = [1 for i in raw_data]
 
     # n = 2 # the larger n is, the smoother curve will be
     # b = [1.0 / n] * n
@@ -35,20 +34,20 @@ if __name__ == "__main__":
         #dat[:,1] = lfilter(b,a,dat[:,1]) 
         #dat[:,1] = dat[:,1] - dat[20,1]
 
-    data = [OSAData(dat[:,:2], ('nm', 'mW'), labels[i], powers_mW[i]) for i, dat in enumerate(raw_data)]
+    data = [OSAData(dat[:,:2], ('nm', 'dBm'), labels[i], powers_mW[i]) for i, dat in enumerate(raw_data)]
 
     fig, axs = plt.subplots()
 
 #    for datum in data:
 #        datum.y_axis_units = 'mW'
 #        axs.plot(datum._x_axis_data, datum.y_axis_data, label=datum.label)
-    for i, datum in enumerate(raw_data[:-1]):
+    for i, datum in enumerate(raw_data):
         axs.plot(datum[:,0],datum[:,1], label=labels[i])
-        axs.set_xlabel('Wavelength (nm)')
-        axs.set_ylabel(f'Spectral Power (arb.)')
-        axs.legend()
+    axs.set_ylim(-90,-70)
+    axs.set_xlabel('Wavelength (nm)')
+    axs.set_ylabel(f'Spectral Power (arb., log)')
+    axs.legend()
 
-    plt.title(r'$0.24^{\circ}$ Grating Angle')
     plt.grid()
     plt.show()
     plt.tight_layout()

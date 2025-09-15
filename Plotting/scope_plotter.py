@@ -1,39 +1,42 @@
 # Plots every scope lineout in user-selected folder. Works for Tektronix scopes
 from pathlib import Path
 import matplotlib.pyplot as plt
-from utils.plotting_utils import directory_to_dataframes, get_scope_data, normalize_by_maximum
+from plottools.spectrometerdata import readFromFiles
+import numpy as np
 
 if __name__ == "__main__":
     save_fig = False
-    filename = 'frep_over_4_scope_trace'
-    directorypath = Path(r'C:\Users\wahlm\Documents\School\Research\Allison\Tunable Pump\Polarization Control\9-19-23 '
-                         r'Pre, Post EDFA Pulses\post-EDFA\Tektronix Scope')
-    dfs = directory_to_dataframes(directorypath)
-    labels = ('Background',
-              'f_rep/4 vertical',
-              'f_rep vertical',
-              'f_rep/2 vertical',
-              'f_rep/2 horizontal',
-              'f_rep horizontal',
-              'f_rep/4 horizontal'
-              )
-    data = get_scope_data(dfs, labels)
-    normalize_by_maximum(data, 'voltage_V')
-    plot_order = [0, 1, 3, 5, 2, 4, 6]
+    directorypath = Path(r'/home/mike/Documents/Boulder_PhD/Data/9-3-2025/optimized')
+    data, names = readFromFiles(directorypath,skip_header=12)
+    labels = ['Single Shot Interferogram']
+    pad_factor = 6 
+    sample_interval = data[0][1,0] - data[0][0,0]
 
     # Create a figure and axis object using matplotlib
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots()
+    fig2, ax2 = plt.subplots()
 
-    for i, tup in enumerate(sorted(data.items(), key=lambda x: plot_order[labels.index(x[0])])):
-        if i > 4:
-            ax.plot(tup[1]['time_s'], tup[1]['voltage_V'] - i * 1.1, label=tup[0])
+    for i, datum in enumerate(data):
+        ax.plot(datum[:,0], datum[:,1],  label=labels[i], alpha=.7)
+        fftsize = len(datum[:,1]) * 2 ** pad_factor
+        fft = np.abs(np.fft.fftshift(np.fft.fft(datum[:,1], n = fftsize)))**2
+        freqs = np.fft.fftshift(np.fft.fftfreq(fftsize,d=sample_interval))
+        ax2.plot(freqs, fft, label='Single Shot Spectrum', color='tab:orange',alpha=.8)
     # Add axis labels and a legend
     ax.set_xlabel('Time [s]')
     ax.set_ylabel('Voltage [V]')
+    ax.grid()
     ax.legend()
-    # ax.set_title('Photodiode output')
-    ax.set_title('Photodiode Voltage of Polarized Pulses')
+
+    ax2.set_xlim(-1e5, 50e6)
+    ax2.set_ylim(1e5, 1e9)
+    ax2.grid()
+    ax2.legend()
+    ax2.set_yscale('log')
+    ax2.set_xlabel("Fourier Frequency (Hz)")
+    ax2.set_ylabel("Spectral Power (arb.)")
     # Display the plot
-    if save_fig:
-        fig.savefig(directorypath.parent / filename, dpi=300)
+    np.fft.fft(data)
+    fig.savefig(directorypath/'interferogram.svg')
+    fig2.savefig(directorypath/'spectrum.svg')
     plt.show()
