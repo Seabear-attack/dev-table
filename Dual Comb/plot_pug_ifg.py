@@ -110,7 +110,7 @@ fcw_hz = 1e9 * c / apriori['reference1_laser_wvl_nm']
 
 [spc,f] = ffta(avg_signal)
 electrical_axis_hz = fs_hz * f
-optical_axis_hz = electrical_axis_hz * fr_hz / dfr_hz + 2 * fcw_hz
+optical_axis_hz = electrical_axis_hz * fr_hz / dfr_hz 
 time_axis_s = np.linspace(start=0, stop=len(f) / fs_hz, num=len(f))
 
 # Optical frequency spectrum
