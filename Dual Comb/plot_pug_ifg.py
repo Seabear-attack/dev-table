@@ -49,8 +49,7 @@ def read_optical_axis_file(file_path, size):
 
 
 # Path to your folder with .bin files
-folder = Path(r"C:\Users\Splinter-User\Documents\Data\PUG_data\harm2_self-cor_10min\20251002_10h34m43s")
-
+folder = Path(r"Z:\Research Projects\UVDCS\Data\10-10-2025\Waveguide Rb Data\20251010_10h51m33s")
 
 # Read parameter files
 with open(folder/'apriori_params.json', 'r') as file:
@@ -61,6 +60,7 @@ with open(folder/'gageCard_params.json', 'r') as file:
     gage = load(file)
 
 bin_folder = folder / 'Output_data/Channel1'
+
 # Collect .bin files (sorted for consistency)
 data_files = sorted([f for f in os.listdir(bin_folder) if f.endswith(".bin")])
 data_list = []
@@ -83,40 +83,43 @@ for i, d in enumerate(data_list):
 
 # Compute average across files (ignoring NaNs for uneven lengths)
 avg_signal = np.nanmean(matrix, axis=1)
-# Path to your folder with .bin files
-# folder = r"C:\Users\Splinter-User\Documents\Data\PUG_data\harm2_self-cor_10min\20251002_10h34m43s"
 
-# # Collect .bin files (sorted for consistency)
-# files = sorted([f for f in os.listdir(folder) if f.endswith(".bin")])
-# files = files[1]
-# filepath = os.path.join(folder, files)
-# freq_pos, freq_neg, spectrum = read_optical_axis_file(filepath, len(avg_signal))
-# Plot all signals (real part as example)
-# plt.figure(figsize=(10, 6))
-# for i in range(140,matrix.shape[1]):
-#     plt.plot(matrix[:, i].real, label=f'File {i+1}', alpha=0.7)
-# plt.plot(avg_signal.real, 'k--', linewidth=2, label='Average')
-
-# plt.title("Complex Data Files (Real part)")
-# plt.xlabel("Index")
-# plt.ylabel("Amplitude")
-# plt.legend()
-# plt.show()
-
-fs_hz = gage['sampling_rate_Hz']
-dfr_hz = computed['dfr']
-fr_hz = apriori['fr_approx_Hz']
+# Experimental parameters
+fs_hz =  gage['sampling_rate_Hz']
+dfr_hz = - computed['dfr']
+fr1_hz = apriori['fr_approx_Hz']
 fcw_hz = 1e9 * c / apriori['reference1_laser_wvl_nm']
+ppifg = int(computed['ptsPerIGM'])
+fb1 = 30e6
+fb2 = 40e6
+f01 = -35e6
+f02 = -35e6
+harmonic = 2
+nyquist_zone = 0
+dfb = fb1 - fb2
+df0 = f01 - f02
+n1 = round((fcw_hz - fb1 - f01)/fr1_hz)
 
+# Reference Data
+nu_Rb87_D2 = 384.2304844685e12
+nu_split_f1 = -2.56300597908911e9
+nu_split_f2 = 4.27167663181519e9
+# print(nu_Rb87_D2 + nu_split_f1)
+# print(nu_Rb87_D2 + nu_split_f2)
+
+
+# Calculate phase wrapping
+time_axis_s = np.linspace(start=0, stop=ppifg / fs_hz, num=ppifg)
+
+# Calculate axes
 [spc,f] = ffta(avg_signal)
 electrical_axis_hz = fs_hz * f
-optical_axis_hz = electrical_axis_hz * fr_hz / dfr_hz 
-time_axis_s = np.linspace(start=0, stop=len(f) / fs_hz, num=len(f))
+optical_axis_hz = electrical_axis_hz * fr1_hz/dfr_hz + harmonic * fcw_hz - harmonic * fb1 - (harmonic -1) * f01
 
 # Optical frequency spectrum
 plt.figure()
 plt.plot(optical_axis_hz * 1e-12, np.abs(spc))
-# plt.plot(freq_pos/1e12,np.abs(spc))
+plt.vlines([1e-12 * (nu_Rb87_D2 + nu_split_f1), 1e-12*(nu_Rb87_D2 + nu_split_f2)], 2*[0], 2*[np.max(np.abs(spc))], colors=2*['k'])
 plt.xlabel('Approx. Optical Frequency (THz)')
 plt.ylabel('Intensity (arb.)')
 plt.grid()
@@ -130,16 +133,16 @@ plt.ylabel('Intensity (arb.)')
 plt.grid()
 plt.tight_layout()
 
-# Interferogram (real)
-center_us = 1e6 * (time_axis_s[-1] - time_axis_s[0])/2
-window_us = 20
-plt.figure()
-plt.plot(time_axis_s * 1e6, np.real(avg_signal),label='Real part',alpha=.7)
-plt.plot(time_axis_s * 1e6, np.imag(avg_signal), label='Imag part',alpha=.7)
-plt.xlabel(r'Time ($\mu$s)')
-plt.ylabel('Intensity (arb.)')
-plt.xlim(center_us - window_us/2, center_us + window_us/2)
-plt.grid()
-plt.legend()
-plt.tight_layout()
+# # Interferogram (real)
+# center_us = 1e6 * (time_axis_s[-1] - time_axis_s[0])/2
+# window_us = 20
+# plt.figure()
+# plt.plot(time_axis_s * 1e6, np.real(avg_signal),label='Real part',alpha=.7)
+# plt.plot(time_axis_s * 1e6, np.imag(avg_signal), label='Imag part',alpha=.7)
+# plt.xlabel(r'Time ($\mu$s)')
+# plt.ylabel('Intensity (arb.)')
+# plt.xlim(center_us - window_us/2, center_us + window_us/2)
+# plt.grid()
+# plt.legend()
+# plt.tight_layout()
 plt.show()
