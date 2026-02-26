@@ -10,11 +10,36 @@ optical_bandwidth = 50e12 # Spectral width (Hz)
 fr = 100e6 # Comb rep rate (Hz)
 optical_resolution = fr # Resolution can nominally be greater than fr
 center_wavelength = 400e-9 # Optical center wavelength (m)
+# center_wavelength = 1565e-9 # Optical center wavelength (m)
 average_time = 1 # Averaging time (s)
-rin = -132 # Relative intensity noise (dBc/Hz)
+# rin = -132 # Relative intensity noise (dBc/Hz)
+rin = -117 # Relative intensity noise (dBc/Hz)
+# rin = -151 # Relative intensity noise (dBc/Hz)
 
 # Detector parameters
-## Thorlabs APD130A2
+## New Focus 1801 - Si PIN
+# responsivity = .16 # 400 nm
+# photon_multiplier = 1
+# trans_gain = 40e3
+# integrated_noise = 5e-3
+# bandwidth = 125e6
+# pmax = 110e-6
+# nep = integrated_noise / trans_gain / responsivity / (bandwidth)**.5
+# b = 2
+# print(nep)
+# name = 'New Focus 1801'
+
+## PDA05CF2 - InGaAs PIN
+# responsivity = 1.04
+# nep = 1.26e-11
+# photon_multiplier = 1
+# vmax = 5
+# trans_gain = 5e3
+# pmax = vmax / trans_gain / responsivity
+# b = 2
+# name = 'Thorlabs PDA05CF2'
+
+## Thorlabs APD130A2 - Si APD
 # nep = 25/12*.21e-12 # Adjusted for responsivity drop W/rt(Hz)
 # photon_multiplier = 50 # M-factor for APDs / PMTs
 # pmax = 2e-6 # Optical saturation power
@@ -23,7 +48,7 @@ rin = -132 # Relative intensity noise (dBc/Hz)
 # b = 2 # 1 for balanced, 2 for unbalanced
 # name = 'Thorlabs APD130A2'
 
-## Thorlabs PDA8A2
+## Thorlabs PDA8A2 - Si PIN
 nep = .53/.14 * 7.8e-12 # W/rt(Hz)
 photon_multiplier = 1 
 responsivity = .14 # Responsivity (A/W)
@@ -33,7 +58,7 @@ pmax = vmax / trans_gain / responsivity
 b = 2 # 1 for balanced, 2 for unbalanced
 name = 'Thorlabs PDA8A2'
 
-# Thorlabs PDB410A
+# Thorlabs PDB410A - Si PIN
 # nep = .53/.14 * 7e-12 # W/rt(Hz)
 # photon_multiplier = 1 
 # pmax=
