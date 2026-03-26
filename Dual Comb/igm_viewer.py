@@ -25,7 +25,7 @@ plt.figure()
 plt.title('Freq Domain IGM')
 plt.xlabel('RF Frequency (Hz)')
 plt.plot(igm_freq_axis, igm_freq)
-plt.xlim(0, 1.5e7)
+# plt.xlim(0, 1.5e7)
 
 igm_freq_no_2h = deepcopy(igm_freq) 
 igm_freq_no_2h[(igm_freq_axis>3e6) & (igm_freq_axis < 5e6)]=0

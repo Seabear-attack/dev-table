@@ -40,13 +40,13 @@ rin_worst = -117 # Relative intensity noise (dBc/Hz)
 # name = 'Thorlabs PDA05CF2'
 
 ## Thorlabs APD130A2 - Si APD (UV-enhanced)
-nep = 25/12*.21e-12 # Adjusted for responsivity drop W/rt(Hz)
-photon_multiplier = 50 # M-factor for APDs / PMTs
-pmax = 2e-6 # Optical saturation power
-ion_ratio = .05 # guess
-responsivity = 12 # Responsivity @ target wavelength (A/W)
-b = 2 # 1 for balanced, 2 for unbalanced
-name = 'Thorlabs APD130A2'
+# nep = 25/12*.21e-12 # Adjusted for responsivity drop W/rt(Hz)
+# photon_multiplier = 50 # M-factor for APDs / PMTs
+# pmax = 2e-6 # Optical saturation power
+# ion_ratio = .05 # guess
+# responsivity = 12 # Responsivity @ target wavelength (A/W)
+# b = 2 # 1 for balanced, 2 for unbalanced
+# name = 'Thorlabs APD130A2'
 
 ## Thorlabs PDA8A2 - Si PIN
 # nep = .53/.14 * 7.8e-12 # W/rt(Hz)
@@ -67,15 +67,15 @@ name = 'Thorlabs APD130A2'
 # name='Thorlabs PDB410A'
 
 ## Thorlabs APD430A2 - Si APD (UV-enhanced), minimum M
-# nep = 49/22.5 * .15e-12 # W/rt(Hz)
-# photon_multiplier = 10 
-# responsivity = 22.5 * 10 / 100 # Responsivity (A/W)
-# ion_ratio = .05 # guess
-# vmax = 2 
-# trans_gain = 5e3
-# pmax = vmax / trans_gain / responsivity
-# b = 2 # 1 for balanced, 2 for unbalanced
-# name = 'Thorlabs APD430A2'
+nep = 49/22.5 * .15e-12 # W/rt(Hz)
+photon_multiplier = 100 
+responsivity = 22.5 * photon_multiplier / 100 # Responsivity (A/W)
+ion_ratio = .05 # guess
+vmax = 2 
+trans_gain = 5e3
+pmax = vmax / trans_gain / responsivity
+b = 2 # 1 for balanced, 2 for unbalanced
+name = 'Thorlabs APD430A2'
 
 
 powers = np.logspace(-7, -2, 1000)
