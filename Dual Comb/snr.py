@@ -4,19 +4,18 @@ from scipy.constants import Planck as h
 from scipy.constants import elementary_charge as e
 from scipy.constants import speed_of_light as c
 
-# Experimental parameters
+################ Experimental parameters
 gamma = 1 # Comb power ratio
 optical_bandwidth = 50e12 # Spectral width (Hz)
 fr = 100e6 # Comb rep rate (Hz)
 optical_resolution = fr # Resolution can nominally be greater than fr
 center_wavelength = 400e-9 # Optical center wavelength (m)
-# center_wavelength = 1565e-9 # Optical center wavelength (m)
 average_time = 1 # Averaging time (s)
 rin_best = -132 # Relative intensity noise (dBc/Hz)
 rin_worst = -117 # Relative intensity noise (dBc/Hz)
 # rin = -151 # Relative intensity noise (dBc/Hz)
 
-# Detector parameters
+################ Detector parameters
 ## New Focus 1801 - Si PIN
 # responsivity = .16 # 400 nm
 # photon_multiplier = 1
@@ -49,14 +48,16 @@ rin_worst = -117 # Relative intensity noise (dBc/Hz)
 # name = 'Thorlabs APD130A2'
 
 ## Thorlabs PDA8A2 - Si PIN
-# nep = .53/.14 * 7.8e-12 # W/rt(Hz)
-# photon_multiplier = 1 
-# responsivity = .14 # Responsivity (A/W)
-# vmax = 1.8
-# trans_gain = 50e3
-# pmax = vmax / trans_gain / responsivity
-# b = 2 # 1 for balanced, 2 for unbalanced
-# name = 'Thorlabs PDA8A2'
+responsivity_max = .53 # Max responsivity (A/W)
+responsivity = .14 # Responsivity at target wavelength (A/W)
+nep = 7.8e-12 # NEP at max responsivity (usually on spec sheet) [W/rt(Hz)]
+nep = nep * responsivity_max / responsivity
+photon_multiplier = 1 # Multiplication factor. 1 for non-APD detectors
+vmax = 1.8 # Saturation voltage (V)
+trans_gain = 50e3 # Transimpedance gain (V/A)
+pmax = vmax / trans_gain / responsivity # Saturation optical power (W)
+b = 2 # 1 for balanced, 2 for unbalanced
+name = 'Thorlabs PDA8A2'
 
 # Thorlabs PDB410A - Si PIN
 # nep = .53/.14 * 7e-12 # W/rt(Hz)
@@ -67,17 +68,18 @@ rin_worst = -117 # Relative intensity noise (dBc/Hz)
 # name='Thorlabs PDB410A'
 
 ## Thorlabs APD430A2 - Si APD (UV-enhanced), minimum M
-nep = 49/22.5 * .15e-12 # W/rt(Hz)
-photon_multiplier = 100 
-responsivity = 22.5 * photon_multiplier / 100 # Responsivity (A/W)
-ion_ratio = .05 # guess
-vmax = 2 
-trans_gain = 5e3
-pmax = vmax / trans_gain / responsivity
-b = 2 # 1 for balanced, 2 for unbalanced
-name = 'Thorlabs APD430A2'
+# nep = 49/22.5 * .15e-12 # W/rt(Hz)
+# photon_multiplier = 100 
+# responsivity = 22.5 * photon_multiplier / 100 # Responsivity (A/W)
+# ion_ratio = .05 # guess
+# vmax = 2 # Saturation voltage
+# trans_gain = 5e3 # Transimpedance gain (V/A)
+# pmax = vmax / trans_gain / responsivity # Saturation power (W)
+# b = 2 # 1 for balanced, 2 for unbalanced
+# name = 'Thorlabs APD430A2'
 
 
+################ Plot generation
 powers = np.logspace(-7, -2, 1000)
 
 center_freq = c / center_wavelength
