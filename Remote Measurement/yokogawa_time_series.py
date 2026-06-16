@@ -1,4 +1,4 @@
-from hardware_comms.spectrometers.yokogawa import YokogawaAQ6375E
+from hardware_comms.spectrometers.yokogawa import YokogawaOSA
 from plottools.spectrometerdata import OSAData
 import matplotlib.pyplot as plt
 from time import sleep, time
@@ -9,26 +9,25 @@ from numpy import savetxt
 from sched import scheduler
 
 # Connect to PYVISA instance. Use either an alias or the full path (e.g. :INSTR) 
-spectrometer = YokogawaAQ6375E("TCPIP0::192.168.1.58::inst0::INSTR")
+spectrometer = YokogawaOSA("GPIB2::5::INSTR")
 
 # Configure spectrometer settings
-spectrometer.fix_all()
+# spectrometer.fix_all()
 spectrometer.resolution = 0.5
-spectrometer.sensitivity = "NORM"
-spectrometer.wavelength_span= (1100, 1900)
-spectrometer.active_trace = "TRB"
+spectrometer.sensitivity = "HIGH3"
+# spectrometer.sensitivity = "NORM"
+spectrometer.wavelength_span= (350, 650)
+spectrometer.active_trace = "TRA"
 spectrometer.active_trace_status = "WRITE"
-spectrometer.level_scale = "LOG"
+# spectrometer.level_scale = "LOG"
 
 # Configure data collection settings
 start_time = datetime.now()
-data_directory = Path('Z:/Research Projects/UVDCS/Data') / \
-    f"{start_time.month}-{start_time.day}-{start_time.year}" / \
-        f"{start_time.hour}h-{start_time.minute}m_spectrum_time_series"
+data_directory = Path('Z:/Research Projects/UVDCS/Data/6-11-2026/OSA Spectra')
 spectrum_file_template = "%Hh-%Mm-%Ss.csv"
 config_file = "configs.json"
-interval_mins = 1 
-duration_mins = 240
+interval_mins = 5
+duration_mins = 60 * 5
  
 
 
