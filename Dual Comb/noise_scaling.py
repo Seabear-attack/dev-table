@@ -19,7 +19,8 @@ rf_center_freq = 25e6
 bandwidth = 20e6
 
 # Detector values
-trans_gain = 10e3
+trans_gain_dc = 10e3
+trans_gain_50 = 5e3
 output_imp = 50
 photon_mult = 10 * 156/42
 
@@ -53,20 +54,30 @@ data = data.iloc[:-2]
 data['RF Spectrum'] = data['RFSA File Name'].apply(load_file)
 data['PSD (W/Hz)'] = data['RF Spectrum'].apply(integrate_noise)
 data['DC Voltage (V)'] = data['DC Voltage (mV)'] * 1e-3
+data['DC Photocurrent (A)'] = data['DC Voltage (V)'] / trans_gain_dc 
+data['Current PSD (A^2/Hz)'] = data['PSD (W/Hz)'] * output_imp / trans_gain_50**2
 
-test_spectrum = data.iloc[5]['RF Spectrum']
-plt.plot(test_spectrum['Frequency (Hz)'], test_spectrum['RF Power (dBm)'])
+fig, ax = plt.subplots()
+colors = plt.cm.turbo(np.linspace(0, 1, len(data)))
+ax.set_prop_cycle(color=colors)
+
+for i, row in data.iterrows():
+    spectrum = row['RF Spectrum'] - 10 * np.log10(rbw)
+    plt.plot(spectrum['Frequency (Hz)'], spectrum['RF Power (dBm)'])
+
 plt.vlines([rf_center_freq - bandwidth/2, rf_center_freq +
-           bandwidth/2], [-100, -100], [0, 0], 'k')
+           bandwidth/2], [-140, -140], [-100, -100], 'k')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('RF PSD (dBm/Hz)')
 plt.show()
 
-xaxis = 'DC Voltage (V)'
-yaxis = 'PSD (W/Hz)'
+xaxis = 'DC Photocurrent (A)'
+yaxis = 'Current PSD (A^2/Hz)'
 
-x = data[xaxis].to_numpy()
-y = data[yaxis].to_numpy()
+x = data[xaxis].to_numpy() 
+y = data[yaxis].to_numpy() 
 
-# Linear fit with intercept fixed at 0
+# Linear fit
 popt, _ = curve_fit(linear, x, y)
 
 
@@ -74,11 +85,12 @@ popt, _ = curve_fit(linear, x, y)
 x_fit = np.linspace(0, x.max(), 1000)
 y_fit = linear(x_fit, *popt)
 
-excess_noise = popt[0] * output_imp / 2 / trans_gain / q / photon_mult
+excess_noise = popt[0]  / 2 / q / photon_mult
+# k = excess_noise / (2-1/photon_mult)
 print(f'Excess noise: {excess_noise}')
 
 plt.scatter(x, y, label='Data')
-plt.plot(x_fit, y_fit, 'r', label=f'Linear Fit')
+plt.loglog(x_fit, y_fit, 'r', label=f'Linear Fit')
 plt.xlabel(xaxis)
 plt.ylabel(yaxis)
 plt.grid()
