@@ -155,3 +155,4 @@ cython_debug/
 .idea/AllisonLab.iml
 .idea/misc.xml
 .vscode
+hhg_spectra.svg
