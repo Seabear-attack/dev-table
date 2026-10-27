@@ -156,3 +156,6 @@ cython_debug/
 .idea/misc.xml
 .vscode
 hhg_spectra.svg
+Waveguides/ln_neff_vs_bulk.csv
+Dual Comb/noise_scaling.png
+Waveguides/ln_neff_vs_bulk.png
